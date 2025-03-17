@@ -1,10 +1,18 @@
 import React from 'react';
-import { Check, X } from 'lucide-react';
+import { Check, X, Loader2 } from 'lucide-react';
+import { useSubscription } from '../contexts/SubscriptionContext';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export const Pricing = () => {
+  const { handleSubscription, currentPlan, processingPayment } = useSubscription();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const plans = [
     {
       name: "Free",
+      id: "free",
       price: "0",
       description: "Perfect for trying out AnswersAI",
       features: [
@@ -18,6 +26,7 @@ export const Pricing = () => {
     },
     {
       name: "Premium",
+      id: "premium",
       price: "599",
       period: "month",
       description: "Most popular for students",
@@ -31,11 +40,12 @@ export const Pricing = () => {
         "Progress tracking",
         "24/7 AI support"
       ],
-      button: "Start Free Trial",
+      button: "Subscribe",
       popular: true
     },
     {
       name: "Team",
+      id: "team",
       price: "999",
       period: "month",
       description: "Perfect for study groups",
@@ -172,13 +182,38 @@ export const Pricing = () => {
                   ))}
                 </ul>
                 <button
-                  className={`w-full py-3 px-4 rounded-lg font-medium ${
-                    plan.popular
-                      ? 'bg-primary-600 hover:bg-primary-700 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  onClick={() => {
+                    if (!user) {
+                      navigate('/signin');
+                      return;
+                    }
+                    if (plan.id === 'premium') {
+                      handleSubscription(plan.id, 59900);
+                    } else if (plan.id === 'team') {
+                      handleSubscription(plan.id, 99900);
+                    }
+                  }}
+                  disabled={currentPlan === plan.id || processingPayment}
+                  className={`w-full py-3 px-4 rounded-lg font-medium transition-all ${
+                    currentPlan === plan.id
+                      ? 'bg-green-600 text-white cursor-default' 
+                      : plan.popular
+                        ? `bg-primary-600 hover:bg-primary-700 text-white ${processingPayment ? 'opacity-75 cursor-wait' : ''}`
+                        : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
-                  {plan.button}
+                  <span className="flex items-center justify-center gap-2">
+                    {currentPlan === plan.id ? (
+                      'Current Plan'
+                    ) : processingPayment ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      plan.button
+                    )}
+                  </span>
                 </button>
               </div>
             ))}

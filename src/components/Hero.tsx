@@ -4,7 +4,7 @@ import { Camera, Chrome } from 'lucide-react';
 export const Hero = () => {
   return (
     <section className="max-w-5xl mx-auto text-center pb-24">
-      <div className="inline-flex items-center bg-white dark:bg-gray-800 rounded-full px-4 py-2 mb-8">
+      <div className="inline-flex items-center bg-white dark:bg-gray-800 rounded-full px-4 py-2 mb-8 mt-5 relative before:absolute before:inset-0 before:rounded-full before:border before:border-gray-200 dark:before:border-gray-700 before:transition-all hover:before:scale-105 before:duration-300 after:absolute after:inset-0 after:rounded-full after:border after:border-primary-400/50 dark:after:border-primary-500/50 after:transition-all hover:after:scale-110 after:duration-500">
         <Chrome className="w-5 h-5 text-primary-600 mr-2" />
         <span className="text-sm text-gray-600 dark:text-gray-300">Available on Chrome Web Store</span>
       </div>
