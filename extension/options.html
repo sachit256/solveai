@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SolveAI Settings</title>
+  <style>
+    body {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 24px;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .header {
+      margin-bottom: 24px;
+    }
+    h1 {
+      color: #4F46E5;
+      margin: 0 0 8px 0;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #D1D5DB;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: monospace;
+    }
+    .button-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .button {
+      padding: 8px 16px;
+      background: #4F46E5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .button:hover {
+      background: #4338CA;
+    }
+    .button.secondary {
+      background: #6B7280;
+    }
+    .button.secondary:hover {
+      background: #4B5563;
+    }
+    .status {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 6px;
+      display: none;
+    }
+    .success {
+      background: #DEF7EC;
+      color: #03543F;
+    }
+    .error {
+      background: #FDE8E8;
+      color: #9B1C1C;
+    }
+    .info {
+      background: #E1EFFE;
+      color: #1E429F;
+    }
+    .help-text {
+      font-size: 14px;
+      color: #6B7280;
+      margin-top: 4px;
+    }
+    .instructions {
+      background: #F3F4F6;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+    .instructions h2 {
+      margin-top: 0;
+      font-size: 16px;
+    }
+    .instructions ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .instructions li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>SolveAI Settings</h1>
+    <p>Configure your OpenAI API key to start getting instant answers.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to get your OpenAI API key:</h2>
+    <ol>
+      <li>Go to <a href="https://platform.openai.com/account/api-keys" target="_blank">OpenAI API Keys</a></li>
+      <li>Sign in or create an account</li>
+      <li>Click "Create new secret key"</li>
+      <li>Copy the key and paste it below</li>
+    </ol>
+  </div>
+  
+  <div class="form-group">
+    <label for="apiKey">OpenAI API Key</label>
+    <input type="text" id="apiKey" placeholder="sk-...">
+    <p class="help-text">Your API key will be stored locally and is only used to communicate with OpenAI.</p>
+  </div>
+  
+  <div class="button-group">
+    <button id="save" class="button">Save Settings</button>
+    <button id="test" class="button secondary">Test API Key</button>
+  </div>
+  
+  <div id="status" class="status"></div>
+  
+  <script src="options.js"></script>
+</body>
+</html> 
