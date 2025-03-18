@@ -1,88 +1,136 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AnswersAi</title>
+  <title>SolveAI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --primary-light: #eef2ff;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --border-color: #e5e7eb;
+      --success: #10b981;
+      --error: #ef4444;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --transition: all 0.2s ease-in-out;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       width: 100%;
       min-height: 100vh;
       margin: 0;
-      padding: 20px;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background-color: #f9fafb;
-      color: #1f2937;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      line-height: 1.5;
     }
 
     .container {
       max-width: 600px;
       margin: 0 auto;
+      padding: 20px;
     }
 
     .header {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 12px;
       margin-bottom: 24px;
+      padding: 16px;
+      background: var(--bg-primary);
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .header:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .logo {
       width: 40px;
       height: 40px;
+      border-radius: 10px;
+      transition: var(--transition);
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
     }
 
     .title {
       font-size: 24px;
-      font-weight: 600;
+      font-weight: 700;
       margin: 0;
-    }
-
-    .subscription-status {
-      padding: 16px;
-      border-radius: 8px;
-      background-color: white;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      margin-bottom: 24px;
-    }
-
-    .subscription-status.premium {
-      background-color: #fdf4ff;
-      border: 1px solid #e879f9;
-    }
-
-    .content-section {
-      padding: 20px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .button {
       display: inline-flex;
       align-items: center;
+      gap: 8px;
       padding: 8px 16px;
-      border-radius: 6px;
+      border-radius: 8px;
       font-weight: 500;
+      font-size: 14px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: var(--transition);
       border: none;
-      background-color: #4f46e5;
+      background-color: var(--primary);
       color: white;
     }
 
     .button:hover {
-      background-color: #4338ca;
+      background-color: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .button:active {
+      transform: translateY(0);
     }
 
     .settings-button {
       background-color: transparent;
-      border: 1px solid #d1d5db;
-      color: #4b5563;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
     }
 
     .settings-button:hover {
-      background-color: #f3f4f6;
+      background-color: var(--bg-secondary);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .signout-button {
+      margin-left: auto;
+      color: var(--error);
+      border-color: var(--error);
+    }
+
+    .signout-button:hover {
+      background-color: var(--error);
+      color: white;
     }
 
     #login-screen {
@@ -92,41 +140,161 @@
       justify-content: center;
       min-height: 60vh;
       text-align: center;
+      animation: fadeIn 0.5s ease-out;
     }
 
     #login-screen h2 {
+      font-size: 28px;
+      font-weight: 700;
       margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     #login-screen p {
-      color: #6b7280;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      font-size: 16px;
+      max-width: 400px;
+    }
+
+    .subscription-status {
+      padding: 20px;
+      border-radius: 12px;
+      background-color: var(--bg-primary);
+      box-shadow: var(--shadow-sm);
       margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: var(--transition);
+    }
+
+    .subscription-status:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .subscription-status.premium {
+      background: linear-gradient(135deg, #fdf4ff, #fae8ff);
+      border: 1px solid #e879f9;
+    }
+
+    .subscription-status.free {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .subscription-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .subscription-info {
+      flex: 1;
+    }
+
+    .subscription-info h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .subscription-info p {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .content-section {
+      padding: 24px;
+      background-color: var(--bg-primary);
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+      transition: var(--transition);
+    }
+
+    .content-section:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .content-section h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text-primary);
     }
 
     .feature-card {
-      padding: 16px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      margin-bottom: 12px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      transition: var(--transition);
+      background: var(--bg-primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
 
     .feature-card h3 {
       margin: 0 0 8px 0;
       font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .feature-card p {
       margin: 0;
-      color: #6b7280;
+      color: var(--text-secondary);
       font-size: 14px;
+    }
+
+    #last-answer {
+      padding: 16px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      min-height: 100px;
     }
 
     .loading {
       display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 2px solid #f3f3f3;
-      border-top: 2px solid #3498db;
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--primary-light);
+      border-top: 3px solid var(--primary);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -135,26 +303,107 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .upgrade-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .upgrade-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+
+    .upgrade-button:active {
+      transform: translateY(0);
+    }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #1f2937;
+        --bg-secondary: #111827;
+        --text-primary: #f9fafb;
+        --text-secondary: #9ca3af;
+        --border-color: #374151;
+      }
+
+      .subscription-status {
+        background-color: var(--bg-primary);
+      }
+
+      .feature-card {
+        background-color: var(--bg-primary);
+      }
+
+      #last-answer {
+        background-color: var(--bg-secondary);
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <!-- Login Screen -->
     <div id="login-screen">
-      <h2>Welcome to AnswersAi</h2>
-      <p>Sign in to access instant answers and explanations</p>
-      <button id="login-button" class="button">Sign In</button>
+      <h2>Welcome to SolveAI</h2>
+      <p>Get instant answers and explanations for any question. Select text on any webpage to get started!</p>
+      <button id="login-button" class="button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        Sign In
+      </button>
     </div>
 
     <!-- Main Content -->
     <div id="main-content">
       <div class="header">
-        <img src="icons/icon128.png" alt="AnswersAi Logo" class="logo">
-        <h1 class="title">AnswersAi</h1>
+        <div class="header-left">
+          <img src="icons/icon128.png" alt="SolveAI Logo" class="logo">
+          <h1 class="title">SolveAI</h1>
+        </div>
+        <button id="signout-button" class="button settings-button signout-button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Sign Out
+        </button>
       </div>
 
       <div id="subscription-status" class="subscription-status">
-        Loading subscription status...
+        <div class="subscription-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <div class="subscription-info">
+          <h3>Loading subscription status...</h3>
+          <p>Please wait while we check your account</p>
+        </div>
       </div>
 
       <!-- Premium Content -->
@@ -162,15 +411,30 @@
         <div class="content-section">
           <h2>Premium Features</h2>
           <div class="feature-card">
-            <h3>✨ Instant Answers</h3>
-            <p>Select any text to get instant, accurate answers</p>
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              </svg>
+              Instant Answers
+            </h3>
+            <p>Select any text to get instant, accurate answers powered by advanced AI</p>
           </div>
           <div class="feature-card">
-            <h3>🔍 Detailed Explanations</h3>
-            <p>Get step-by-step explanations for complex questions</p>
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+              </svg>
+              Detailed Explanations
+            </h3>
+            <p>Get step-by-step explanations for complex questions with visual aids</p>
           </div>
           <div class="feature-card">
-            <h3>📚 Unlimited Usage</h3>
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+              </svg>
+              Unlimited Usage
+            </h3>
             <p>No limits on the number of questions you can ask</p>
           </div>
         </div>
@@ -180,7 +444,13 @@
           <div id="last-answer">No answers yet. Select text on any webpage to get started!</div>
         </div>
 
-        <button id="settings" class="button settings-button">⚙️ Settings</button>
+        <button id="settings" class="button settings-button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          Settings
+        </button>
       </div>
 
       <!-- Free Content -->
@@ -188,14 +458,27 @@
         <div class="content-section">
           <h2>Upgrade to Premium</h2>
           <div class="feature-card">
-            <h3>🚀 Unlock All Features</h3>
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+              </svg>
+              Unlock All Features
+            </h3>
             <p>Get unlimited access to instant answers and explanations</p>
           </div>
           <div class="feature-card">
-            <h3>💡 Advanced Capabilities</h3>
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M2 12h20"></path>
+              </svg>
+              Advanced Capabilities
+            </h3>
             <p>Access detailed explanations and step-by-step solutions</p>
           </div>
-          <a href="https://calm-horse-4892b7.netlify.app/pricing" target="_blank" class="button">
+          <a href="https://calm-horse-4892b7.netlify.app/pricing" target="_blank" class="upgrade-button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
             Upgrade Now
           </a>
         </div>

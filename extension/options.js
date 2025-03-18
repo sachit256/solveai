@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const verifyButton = document.getElementById('verify');
   const statusDiv = document.getElementById('status');
   const subscriptionStatusDiv = document.getElementById('subscription-status');
+  const darkModeToggle = document.getElementById('darkMode');
+  const notificationsToggle = document.getElementById('notifications');
+  const autoExpandToggle = document.getElementById('autoExpand');
+  const userEmailElement = document.getElementById('userEmail');
+  const subscriptionStatusElement = document.getElementById('subscriptionStatus');
+  const logoutButton = document.getElementById('logout');
 
   // Load saved API key
   chrome.storage.local.get(['apiKey', 'userEmail', 'subscriptionStatus'], (result) => {
@@ -18,6 +24,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       updateSubscriptionUI(null);
     }
+  });
+
+  // Load saved settings
+  chrome.storage.local.get([
+    'darkMode',
+    'notifications',
+    'autoExpand',
+    'userEmail',
+    'subscriptionStatus'
+  ], (result) => {
+    // Update toggles
+    darkModeToggle.checked = result.darkMode || false;
+    notificationsToggle.checked = result.notifications !== false; // Default to true
+    autoExpandToggle.checked = result.autoExpand || false;
+
+    // Update account info
+    userEmailElement.textContent = result.userEmail || 'Not signed in';
+    subscriptionStatusElement.textContent = 
+      result.subscriptionStatus === 'premium' ? '✨ Premium Plan' :
+      result.subscriptionStatus === 'team' ? '👥 Team Plan' :
+      '🔄 Free Plan';
   });
 
   // Update subscription status UI
@@ -189,4 +216,68 @@ document.addEventListener('DOMContentLoaded', async () => {
       showStatus('Error testing API key', 'error');
     }
   });
+
+  // Save settings when changed
+  darkModeToggle.addEventListener('change', () => {
+    chrome.storage.local.set({ darkMode: darkModeToggle.checked });
+    updateTheme(darkModeToggle.checked);
+  });
+
+  notificationsToggle.addEventListener('change', () => {
+    chrome.storage.local.set({ notifications: notificationsToggle.checked });
+  });
+
+  autoExpandToggle.addEventListener('change', () => {
+    chrome.storage.local.set({ autoExpand: autoExpandToggle.checked });
+  });
+
+  // Handle logout
+  logoutButton.addEventListener('click', async () => {
+    try {
+      // Add loading state
+      logoutButton.disabled = true;
+      logoutButton.innerHTML = `
+        <svg class="loading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        Signing out...
+      `;
+
+      // Clear all stored data
+      await chrome.storage.local.clear();
+
+      // Close the options page and open the login page
+      window.close();
+      chrome.tabs.create({ url: 'http://localhost:5173/signin' });
+    } catch (error) {
+      console.error('Error during logout:', error);
+      // Reset button state
+      logoutButton.disabled = false;
+      logoutButton.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Sign Out
+      `;
+    }
+  });
+
+  // Function to update theme
+  function updateTheme(isDark) {
+    if (isDark) {
+      document.documentElement.style.setProperty('--bg-primary', '#1f2937');
+      document.documentElement.style.setProperty('--bg-secondary', '#111827');
+      document.documentElement.style.setProperty('--text-primary', '#f9fafb');
+      document.documentElement.style.setProperty('--text-secondary', '#9ca3af');
+      document.documentElement.style.setProperty('--border-color', '#374151');
+    } else {
+      document.documentElement.style.setProperty('--bg-primary', '#ffffff');
+      document.documentElement.style.setProperty('--bg-secondary', '#f9fafb');
+      document.documentElement.style.setProperty('--text-primary', '#1f2937');
+      document.documentElement.style.setProperty('--text-secondary', '#6b7280');
+      document.documentElement.style.setProperty('--border-color', '#e5e7eb');
+    }
+  }
 }); 

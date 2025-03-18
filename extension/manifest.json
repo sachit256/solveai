@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "AnswersAi",
+  "name": "SolveAI",
   "version": "1.0",
   "description": "Get instant answers to any question by selecting text",
   "permissions": [
@@ -17,7 +17,7 @@
     "default_path": "sidepanel.html"
   },
   "action": {
-    "default_title": "AnswersAi",
+    "default_title": "SolveAI",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",

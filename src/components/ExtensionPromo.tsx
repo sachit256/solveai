@@ -6,7 +6,7 @@ export const ExtensionPromo = () => {
     {
       icon: <Chrome className="w-6 h-6" />,
       title: "Install Extension",
-      description: "Add AnswersAI to Chrome in just one click"
+      description: "Add SolveAI to Chrome in just one click"
     },
     {
       icon: <MousePointer2 className="w-6 h-6" />,
@@ -32,7 +32,7 @@ export const ExtensionPromo = () => {
               Transform any webpage into your personal AI tutor
             </p>
             <a
-              href="https://chrome.google.com/webstore/detail/answersai/your-extension-id"
+              href="https://chrome.google.com/webstore/detail/solveai/your-extension-id"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors"

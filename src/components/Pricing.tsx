@@ -14,7 +14,7 @@ export const Pricing = () => {
       name: "Free",
       id: "free",
       price: "0",
-      description: "Perfect for trying out AnswersAI",
+      description: "Perfect for trying out SolveAI",
       features: [
         "2 questions per day",
         "Basic explanations",
