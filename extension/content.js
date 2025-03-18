@@ -193,31 +193,19 @@ function showAnswerPopup(x, y, text) {
     }, (response) => {
       if (chrome.runtime.lastError) {
         console.error('Extension context invalidated:', chrome.runtime.lastError);
-        if (answerPopup) {
-          answerPopup.innerHTML = `
-            <div class="popup-content">
-              <div class="popup-header">
-                <div class="popup-title">Error</div>
-                <button class="popup-close">&times;</button>
-              </div>
-              <div class="popup-body">The extension needs to be reloaded. Please refresh the page and try again.</div>
-            </div>
-          `;
-          
-          const closeButton = answerPopup.querySelector('.popup-close');
-          if (closeButton) {
-            closeButton.addEventListener('click', () => {
-              answerPopup.style.display = 'none';
-              toggleSelectionMode();
-            });
-          }
-        }
+        showErrorPopup('The extension needs to be reloaded. Please refresh the page and try again.');
         return;
       }
 
       if (!answerPopup) return;
 
+      if (response.requiresUpgrade) {
+        showUpgradePopup();
+        return;
+      }
+
       if (response && response.answer) {
+        // Update the popup
         answerPopup.innerHTML = `
           <div class="popup-content">
             <div class="popup-header">
@@ -227,12 +215,18 @@ function showAnswerPopup(x, y, text) {
             <div class="popup-body">
               ${response.answer}
               <div class="explanation-section" style="margin-top: 12px; border-top: 1px solid var(--border-color);">
-                <button class="explain-button">Explain Why</button>
+                <button class="explain-button">Explain Why?</button>
                 <div class="explanation-content" style="display: none; margin-top: 8px;"></div>
               </div>
             </div>
           </div>
         `;
+
+        // Update the side panel
+        chrome.runtime.sendMessage({
+          type: 'UPDATE_ANSWER',
+          answer: response.answer
+        });
 
         // Add explanation button functionality
         const explainButton = answerPopup.querySelector('.explain-button');
@@ -253,22 +247,27 @@ function showAnswerPopup(x, y, text) {
                   answer: response.answer
                 }, (explanationResponse) => {
                   if (chrome.runtime.lastError) {
-                    explanationContent.innerHTML = 'The extension needs to be reloaded. Please refresh the page and try again.';
+                    explanationContent.innerHTML = 'Failed to generate explanation. Please try again.';
                     return;
                   }
-                  
+
+                  if (explanationResponse.requiresUpgrade) {
+                    showUpgradePopup();
+                    return;
+                  }
+
                   if (explanationResponse && explanationResponse.explanation) {
                     explanationContent.innerHTML = explanationResponse.explanation;
-                  } else {
-                    explanationContent.innerHTML = 'Failed to generate explanation. Please try again.';
+                  } else if (explanationResponse.error) {
+                    explanationContent.innerHTML = `Error: ${explanationResponse.error}`;
                   }
                 });
               } catch (error) {
-                explanationContent.innerHTML = 'Failed to generate explanation. Please refresh the page and try again.';
+                explanationContent.innerHTML = 'Failed to generate explanation. Please try again.';
               }
             } else {
               explanationContent.style.display = 'none';
-              explainButton.textContent = 'Explain Why';
+              explainButton.textContent = 'Explain Why?';
             }
           });
         }
@@ -281,47 +280,72 @@ function showAnswerPopup(x, y, text) {
             toggleSelectionMode();
           });
         }
-      } else {
-        answerPopup.innerHTML = `
-          <div class="popup-content">
-            <div class="popup-header">
-              <div class="popup-title">Error</div>
-              <button class="popup-close">&times;</button>
-            </div>
-            <div class="popup-body">${response?.error || 'Failed to generate answer. Please try again.'}</div>
-          </div>
-        `;
-
-        // Add close button functionality for error state
-        const closeButton = answerPopup.querySelector('.popup-close');
-        if (closeButton) {
-          closeButton.addEventListener('click', () => {
-            answerPopup.style.display = 'none';
-            toggleSelectionMode();
-          });
-        }
+      } else if (response.error) {
+        showErrorPopup(response.error);
       }
     });
   } catch (error) {
-    if (answerPopup) {
-      answerPopup.innerHTML = `
-        <div class="popup-content">
-          <div class="popup-header">
-            <div class="popup-title">Error</div>
-            <button class="popup-close">&times;</button>
-          </div>
-          <div class="popup-body">The extension encountered an error. Please refresh the page and try again.</div>
+    showErrorPopup('Failed to generate answer. Please try again.');
+  }
+}
+
+function showUpgradePopup() {
+  if (!answerPopup) return;
+
+  answerPopup.innerHTML = `
+    <div class="popup-content">
+      <div class="popup-header">
+        <div class="popup-title">Premium Feature</div>
+        <button class="popup-close">&times;</button>
+      </div>
+      <div class="popup-body">
+        <div style="text-align: center; padding: 20px 0;">
+          <div style="font-size: 24px; margin-bottom: 8px;">👑</div>
+          <h3 style="margin: 0 0 8px 0; color: #4F46E5;">Upgrade to Premium</h3>
+          <p style="margin: 0 0 16px 0; color: #6B7280;">
+            This feature is available exclusively to premium users.
+            Upgrade now to unlock all features!
+          </p>
+          <a href="https://calm-horse-4892b7.netlify.app/pricing" 
+             target="_blank" 
+             class="button" 
+             style="display: inline-block; background: #4F46E5; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 500;">
+            Upgrade Now
+          </a>
         </div>
-      `;
-      
-      const closeButton = answerPopup.querySelector('.popup-close');
-      if (closeButton) {
-        closeButton.addEventListener('click', () => {
-          answerPopup.style.display = 'none';
-          toggleSelectionMode();
-        });
-      }
-    }
+      </div>
+    </div>
+  `;
+
+  // Add close button functionality
+  const closeButton = answerPopup.querySelector('.popup-close');
+  if (closeButton) {
+    closeButton.addEventListener('click', () => {
+      answerPopup.style.display = 'none';
+      toggleSelectionMode();
+    });
+  }
+}
+
+function showErrorPopup(message) {
+  if (!answerPopup) return;
+
+  answerPopup.innerHTML = `
+    <div class="popup-content">
+      <div class="popup-header">
+        <div class="popup-title">Error</div>
+        <button class="popup-close">&times;</button>
+      </div>
+      <div class="popup-body">${message}</div>
+    </div>
+  `;
+  
+  const closeButton = answerPopup.querySelector('.popup-close');
+  if (closeButton) {
+    closeButton.addEventListener('click', () => {
+      answerPopup.style.display = 'none';
+      toggleSelectionMode();
+    });
   }
 }
 

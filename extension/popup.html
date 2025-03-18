@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SolveAI</title>
+  <title>AnswersAi</title>
   <style>
     body {
       width: 320px;
@@ -42,21 +42,96 @@
       cursor: pointer;
       font-size: 14px;
       text-align: center;
+      text-decoration: none;
+      margin-bottom: 8px;
     }
     .button:hover {
       background: #4338CA;
+    }
+    .subscription-status {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .subscription-status.premium {
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+    }
+    .subscription-status.free {
+      background: #F3F4F6;
+      border: 1px solid #E5E7EB;
+    }
+    .subscription-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 14px;
+    }
+    .subscription-icon.premium {
+      background: #6366F1;
+      color: white;
+    }
+    .subscription-icon.free {
+      background: #9CA3AF;
+      color: white;
+    }
+    .subscription-info {
+      flex: 1;
+    }
+    .subscription-info h3 {
+      margin: 0 0 4px 0;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .subscription-info p {
+      margin: 0;
+      font-size: 12px;
+      color: #6B7280;
+    }
+    .upgrade-link {
+      color: #4F46E5;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .upgrade-link:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <img src="icons/icon48.png" alt="SolveAI Logo" class="logo">
-    <h1>SolveAI</h1>
-    <div class="instructions">
-      Simply drag over any question or problem on the page to get instant answers and explanations.
+    <div class="header">
+      <img src="icons/icon48.png" alt="AnswersAi Logo" class="logo">
+      <h1>AnswersAi</h1>
     </div>
-    <button id="settings" class="button">Settings</button>
+
+    <div id="subscription-status" class="subscription-status">
+      <!-- This will be populated by JavaScript -->
+    </div>
+
+    <div id="premium-content" style="display: none;">
+      <div class="instructions">
+        Simply drag over any question or problem on the page to get instant answers and explanations.
+      </div>
+      <button id="settings" class="button">Settings</button>
+    </div>
+
+    <div id="free-content" style="display: none;">
+      <div class="instructions">
+        Upgrade to premium to get instant answers to any question by simply dragging over text.
+      </div>
+      <a href="https://calm-horse-4892b7.netlify.app/pricing" target="_blank" class="button">Upgrade to Premium</a>
+      <button id="settings" class="button" style="background: #6B7280;">Settings</button>
+    </div>
   </div>
+  <script src="supabase.js"></script>
   <script src="popup.js"></script>
 </body>
 </html> 

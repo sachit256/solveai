@@ -1,15 +1,105 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { Brain } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+
+// Type declarations for Chrome extension API
+declare global {
+  interface Window {
+    chrome?: {
+      runtime?: {
+        sendMessage?: (
+          extensionId: string,
+          message: any,
+          options?: any
+        ) => Promise<any>;
+      };
+    };
+  }
+  const chrome: Window['chrome'];
+}
+
+// Extension ID for development and production
+const EXTENSION_ID = 'ipkfbbjjlklmccnlhebanolgjhhjdidg'; // Replace with your actual extension ID
+
+// Debug function to check extension availability
+const debugChromeRuntime = () => {
+  console.log('Chrome object available:', typeof window.chrome !== 'undefined');
+  console.log('Chrome runtime available:', typeof window.chrome?.runtime !== 'undefined');
+  console.log('Chrome sendMessage available:', typeof window.chrome?.runtime?.sendMessage !== 'undefined');
+  console.log('Using Extension ID:', EXTENSION_ID);
+  console.log('Current URL:', window.location.href);
+  console.log('Current Origin:', window.location.origin);
+};
+
+interface UserData {
+  email: string;
+  subscriptionStatus?: string;
+  id: string;
+}
+
+interface AuthUser {
+  email: string | null;
+  id?: string;
+  subscriptionStatus?: string;
+  [key: string]: any; // Allow for additional properties
+}
 
 export const SignInPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
   const navigate = useNavigate();
+
+  const notifyExtension = async (userData: UserData) => {
+    try {
+      console.log('=== Extension Communication Debug ===');
+      debugChromeRuntime();
+      console.log('Attempting to notify extension with data:', userData);
+      
+      // Check if Chrome runtime is available
+      if (typeof window.chrome === 'undefined' || !window.chrome?.runtime?.sendMessage) {
+        console.error('Chrome runtime not available - are you running this in Chrome with the extension installed?');
+        return;
+      }
+
+      // Get the current session
+      const { data: sessionData } = await supabase.auth.getSession();
+      const access_token = sessionData?.session?.access_token;
+
+      console.log('Sending message to extension...');
+      // Try to send message to extension
+      const response = await window.chrome.runtime.sendMessage(EXTENSION_ID, {
+        type: 'SIGNIN_SUCCESS',
+        userData: {
+          email: userData.email,
+          subscriptionStatus: userData.subscriptionStatus || 'free',
+          userId: userData.id,
+          access_token: access_token
+        }
+      });
+
+      console.log('Raw extension response:', response);
+      
+      if (response?.success) {
+        console.log('Successfully notified extension');
+      } else {
+        console.warn('Extension notification failed:', response);
+      }
+    } catch (error) {
+      // Check if this is an "Extension context invalidated" error
+      if (error instanceof Error) {
+        console.error('Extension communication error:', {
+          message: error.message,
+          stack: error.stack,
+          error
+        });
+      } else {
+        console.error('Unknown extension error:', error);
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,9 +107,74 @@ export const SignInPage = () => {
     setLoading(true);
 
     try {
-      await signIn(email, password);
-      navigate('/');
+      // Sign in with Supabase auth
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (authError) {
+        throw authError;
+      }
+
+      console.log('Auth data:', authData);
+
+      if (!authData.user) {
+        throw new Error('No user data returned from auth');
+      }
+
+      if (!authData.user.email) {
+        throw new Error('No email found in user data');
+      }
+
+      // Check subscription status using Supabase client
+      const { data: subscriptionData, error: subscriptionError } = await supabase
+        .from('subscriptions')
+        .select('plan_id')
+        .eq('user_id', authData.user.id)
+        .single();
+
+      if (subscriptionError && !subscriptionError.message.includes('No rows found')) {
+        console.error('Error fetching subscription:', subscriptionError);
+      }
+
+      const subscriptionStatus = subscriptionData?.plan_id || 'free';
+      console.log('Subscription status:', subscriptionStatus);
+
+      // Get the current session for access token
+      const { data: sessionData } = await supabase.auth.getSession();
+      const access_token = sessionData?.session?.access_token;
+
+      if (!access_token) {
+        throw new Error('No access token found in session');
+      }
+
+      // Notify extension with complete user data
+      await notifyExtension({
+        email: authData.user.email,
+        id: authData.user.id,
+        subscriptionStatus: subscriptionStatus
+      });
+
+      // Store session data in Chrome storage
+      if (window.chrome?.runtime?.sendMessage) {
+        await window.chrome.runtime.sendMessage(EXTENSION_ID, {
+          type: 'STORE_SESSION',
+          session: {
+            access_token: access_token,
+            refresh_token: sessionData?.session?.refresh_token,
+            user: {
+              id: authData.user.id,
+              email: authData.user.email,
+              subscriptionStatus: subscriptionStatus
+            }
+          }
+        });
+      }
+
+      window.location.href = 'http://localhost:5173/signin';
     } catch (err) {
+      console.error('Sign in error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);

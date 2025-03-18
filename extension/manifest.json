@@ -1,15 +1,23 @@
 {
   "manifest_version": 3,
-  "name": "SolveAI",
-  "version": "1.0.0",
-  "description": "Get instant answers to any question by simply dragging over text",
+  "name": "AnswersAi",
+  "version": "1.0",
+  "description": "Get instant answers to any question by selecting text",
   "permissions": [
+    "storage",
     "activeTab",
-    "scripting",
-    "storage"
+    "sidePanel"
   ],
+  "externally_connectable": {
+    "matches": [
+      "http://localhost:5173/*"
+    ]
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
   "action": {
-    "default_popup": "popup.html",
+    "default_title": "AnswersAi",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",
@@ -21,16 +29,14 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "js": ["content.js"],
-      "css": ["content.css"],
-      "run_at": "document_end"
+      "css": ["content.css"]
     }
-  ],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "options_page": "options.html"
+  ]
 } 

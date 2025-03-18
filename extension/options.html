@@ -18,14 +18,15 @@
       margin: 0 0 8px 0;
     }
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 24px;
     }
     label {
       display: block;
       margin-bottom: 8px;
       font-weight: 500;
     }
-    input[type="text"] {
+    input[type="text"],
+    input[type="email"] {
       width: 100%;
       padding: 8px;
       border: 1px solid #D1D5DB;
@@ -96,37 +97,110 @@
     .instructions li {
       margin-bottom: 8px;
     }
+    .subscription-status {
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .subscription-status.premium {
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+    }
+    .subscription-status.free {
+      background: #F3F4F6;
+      border: 1px solid #E5E7EB;
+    }
+    .subscription-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    .subscription-icon.premium {
+      background: #6366F1;
+      color: white;
+    }
+    .subscription-icon.free {
+      background: #9CA3AF;
+      color: white;
+    }
+    .subscription-info h3 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+    }
+    .subscription-info p {
+      margin: 0;
+      font-size: 14px;
+      color: #6B7280;
+    }
+    .upgrade-link {
+      color: #4F46E5;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .upgrade-link:hover {
+      text-decoration: underline;
+    }
+    .divider {
+      height: 1px;
+      background: #E5E7EB;
+      margin: 24px 0;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>SolveAI Settings</h1>
-    <p>Configure your OpenAI API key to start getting instant answers.</p>
-  </div>
+    <div class="header">
+      <h1>SolveAI Settings</h1>
+      <p>Configure your settings and verify your subscription status.</p>
+    </div>
 
-  <div class="instructions">
-    <h2>How to get your OpenAI API key:</h2>
-    <ol>
-      <li>Go to <a href="https://platform.openai.com/account/api-keys" target="_blank">OpenAI API Keys</a></li>
-      <li>Sign in or create an account</li>
-      <li>Click "Create new secret key"</li>
-      <li>Copy the key and paste it below</li>
-    </ol>
+    <div id="subscription-status" class="subscription-status">
+      <!-- This will be populated by JavaScript -->
+    </div>
+
+    <div class="form-group">
+      <label for="email">Verify Your Email</label>
+      <input type="email" id="email" placeholder="Enter your email">
+      <p class="help-text">Enter your email to verify your subscription status.</p>
+    </div>
+    
+    <div class="button-group">
+      <button id="verify" class="button">Verify Email</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="instructions">
+      <h2>How to get your OpenAI API key:</h2>
+      <ol>
+        <li>Go to <a href="https://platform.openai.com/account/api-keys" target="_blank">OpenAI API Keys</a></li>
+        <li>Sign in or create an account</li>
+        <li>Click "Create new secret key"</li>
+        <li>Copy the key and paste it below</li>
+      </ol>
+    </div>
+    
+    <div class="form-group">
+      <label for="apiKey">OpenAI API Key</label>
+      <input type="text" id="apiKey" placeholder="sk-...">
+      <p class="help-text">Your API key will be stored locally and is only used to communicate with OpenAI.</p>
+    </div>
+    
+    <div class="button-group">
+      <button id="save" class="button">Save Settings</button>
+      <button id="test" class="button secondary">Test API Key</button>
+    </div>
+    
+    <div id="status" class="status"></div>
   </div>
   
-  <div class="form-group">
-    <label for="apiKey">OpenAI API Key</label>
-    <input type="text" id="apiKey" placeholder="sk-...">
-    <p class="help-text">Your API key will be stored locally and is only used to communicate with OpenAI.</p>
-  </div>
-  
-  <div class="button-group">
-    <button id="save" class="button">Save Settings</button>
-    <button id="test" class="button secondary">Test API Key</button>
-  </div>
-  
-  <div id="status" class="status"></div>
-  
+  <script src="supabase.js"></script>
   <script src="options.js"></script>
 </body>
 </html> 

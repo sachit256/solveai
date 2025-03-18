@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AnswersAi</title>
+  <style>
+    body {
+      width: 100%;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .subscription-status {
+      padding: 16px;
+      border-radius: 8px;
+      background-color: white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 24px;
+    }
+
+    .subscription-status.premium {
+      background-color: #fdf4ff;
+      border: 1px solid #e879f9;
+    }
+
+    .content-section {
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 16px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background-color: #4f46e5;
+      color: white;
+    }
+
+    .button:hover {
+      background-color: #4338ca;
+    }
+
+    .settings-button {
+      background-color: transparent;
+      border: 1px solid #d1d5db;
+      color: #4b5563;
+    }
+
+    .settings-button:hover {
+      background-color: #f3f4f6;
+    }
+
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+    }
+
+    #login-screen h2 {
+      margin-bottom: 16px;
+    }
+
+    #login-screen p {
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+
+    .feature-card {
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Login Screen -->
+    <div id="login-screen">
+      <h2>Welcome to AnswersAi</h2>
+      <p>Sign in to access instant answers and explanations</p>
+      <button id="login-button" class="button">Sign In</button>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+      <div class="header">
+        <img src="icons/icon128.png" alt="AnswersAi Logo" class="logo">
+        <h1 class="title">AnswersAi</h1>
+      </div>
+
+      <div id="subscription-status" class="subscription-status">
+        Loading subscription status...
+      </div>
+
+      <!-- Premium Content -->
+      <div id="premium-content" style="display: none;">
+        <div class="content-section">
+          <h2>Premium Features</h2>
+          <div class="feature-card">
+            <h3>✨ Instant Answers</h3>
+            <p>Select any text to get instant, accurate answers</p>
+          </div>
+          <div class="feature-card">
+            <h3>🔍 Detailed Explanations</h3>
+            <p>Get step-by-step explanations for complex questions</p>
+          </div>
+          <div class="feature-card">
+            <h3>📚 Unlimited Usage</h3>
+            <p>No limits on the number of questions you can ask</p>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h2>Last Answer</h2>
+          <div id="last-answer">No answers yet. Select text on any webpage to get started!</div>
+        </div>
+
+        <button id="settings" class="button settings-button">⚙️ Settings</button>
+      </div>
+
+      <!-- Free Content -->
+      <div id="free-content" style="display: none;">
+        <div class="content-section">
+          <h2>Upgrade to Premium</h2>
+          <div class="feature-card">
+            <h3>🚀 Unlock All Features</h3>
+            <p>Get unlimited access to instant answers and explanations</p>
+          </div>
+          <div class="feature-card">
+            <h3>💡 Advanced Capabilities</h3>
+            <p>Access detailed explanations and step-by-step solutions</p>
+          </div>
+          <a href="https://calm-horse-4892b7.netlify.app/pricing" target="_blank" class="button">
+            Upgrade Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Local scripts only -->
+  <script src="supabase.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html> 
