@@ -40,3 +40,6 @@ extension/*.crx
 
 # Vite
 .vite
+
+# Extension specific
+extension/background.js
