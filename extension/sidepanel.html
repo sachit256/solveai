@@ -18,6 +18,7 @@
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
       --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       --transition: all 0.2s ease-in-out;
+      --sidebar-width: 60px;
     }
 
     * {
@@ -38,9 +39,9 @@
     }
 
     .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
+      max-width: 100%;
+      margin: 0;
+      padding: 16px;
     }
 
     .header {
@@ -48,8 +49,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 24px;
-      padding: 16px;
+      margin-bottom: 16px;
+      padding: 12px;
       background: var(--bg-primary);
       border-radius: 12px;
       box-shadow: var(--shadow-sm);
@@ -162,13 +163,13 @@
     .subscription-status {
       padding: 20px;
       border-radius: 12px;
-      background-color: var(--bg-primary);
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 24px;
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
       gap: 16px;
       transition: var(--transition);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
     }
 
     .subscription-status:hover {
@@ -176,8 +177,8 @@
     }
 
     .subscription-status.premium {
-      background: linear-gradient(135deg, #fdf4ff, #fae8ff);
-      border: 1px solid #e879f9;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
     }
 
     .subscription-status.free {
@@ -193,7 +194,7 @@
       align-items: center;
       justify-content: center;
       font-size: 24px;
-      background: var(--primary-light);
+      background: var(--bg-secondary);
       color: var(--primary);
     }
 
@@ -359,129 +360,420 @@
         background-color: var(--bg-secondary);
       }
     }
+
+    /* Add new sidebar styles */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .main-container {
+      flex: 1;
+      padding-right: var(--sidebar-width);
+    }
+
+    .sidebar {
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: var(--sidebar-width);
+      background: var(--bg-primary);
+      border-left: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 0;
+      z-index: 1000;
+    }
+
+    .sidebar-icon {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .sidebar-icon:hover {
+      background: var(--bg-secondary);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .sidebar-icon.active {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Add tooltip styles */
+    .sidebar-icon::after {
+      content: attr(title);
+      position: absolute;
+      right: calc(100% + 10px);
+      top: 50%;
+      transform: translateY(-50%) scale(0.8);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease-in-out;
+      border: 1px solid var(--border-color);
+    }
+
+    .sidebar-icon::before {
+      content: '';
+      position: absolute;
+      right: calc(100% + 5px);
+      top: 50%;
+      transform: translateY(-50%) scale(0.8);
+      border-left: 5px solid var(--bg-primary);
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .sidebar-icon:hover::after,
+    .sidebar-icon:hover::before {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(-50%) scale(1);
+    }
+
+    .sidebar-spacer {
+      flex: 1;
+    }
+
+    /* Dark mode updates */
+    @media (prefers-color-scheme: dark) {
+      .sidebar {
+        background: var(--bg-primary);
+        border-color: var(--border-color);
+      }
+      
+      .sidebar-icon:hover {
+        background: var(--bg-secondary);
+      }
+      
+      .sidebar-icon.active {
+        background: rgba(79, 70, 229, 0.2);
+      }
+
+      .sidebar-icon::after {
+        background: var(--bg-primary);
+        border-color: var(--border-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .sidebar-icon::before {
+        border-left-color: var(--bg-primary);
+      }
+    }
+
+    .settings-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 12px 0;
+    }
+
+    .settings-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .settings-link {
+      background: none;
+      border: none;
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 14px;
+      color: var(--text-primary);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .settings-link:hover {
+      background: var(--bg-secondary);
+      color: var(--primary);
+    }
+
+    .settings-link.danger {
+      color: var(--error);
+    }
+
+    .settings-link.danger:hover {
+      background: var(--error);
+      color: white;
+    }
+
+    .toggle-switch {
+      appearance: none;
+      width: 40px;
+      height: 20px;
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .toggle-switch:checked {
+      background: var(--primary);
+    }
+
+    .toggle-switch::before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      background: white;
+      transition: var(--transition);
+    }
+
+    .toggle-switch:checked::before {
+      transform: translateX(20px);
+    }
+
+    /* Dark mode updates */
+    @media (prefers-color-scheme: dark) {
+      .toggle-switch {
+        background: var(--border-color);
+      }
+      
+      .settings-link:hover {
+        background: var(--bg-secondary);
+      }
+    }
+
+    /* Remove settings menu styles */
+    .settings-menu {
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Login Screen -->
-    <div id="login-screen">
-      <h2>Welcome to SolveAI</h2>
-      <p>Get instant answers and explanations for any question. Select text on any webpage to get started!</p>
-      <button id="login-button" class="button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-          <polyline points="10 17 15 12 10 7"></polyline>
-          <line x1="15" y1="12" x2="3" y2="12"></line>
-        </svg>
-        Sign In
-      </button>
-    </div>
-
-    <!-- Main Content -->
-    <div id="main-content">
-      <div class="header">
-        <div class="header-left">
-          <img src="icons/icon128.png" alt="SolveAI Logo" class="logo">
-          <h1 class="title">SolveAI</h1>
+  <div class="app-container">
+    <div class="main-container">
+      <div class="container">
+        <!-- Login Screen -->
+        <div id="login-screen">
+          <h2>Welcome to SolveAI</h2>
+          <p>Get instant answers and explanations for any question. Select text on any webpage to get started!</p>
+          <button id="login-button" class="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            Sign In
+          </button>
         </div>
-        <button id="signout-button" class="button settings-button signout-button">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-          </svg>
-          Sign Out
-        </button>
-      </div>
 
-      <div id="subscription-status" class="subscription-status">
-        <div class="subscription-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-          </svg>
-        </div>
-        <div class="subscription-info">
-          <h3>Loading subscription status...</h3>
-          <p>Please wait while we check your account</p>
-        </div>
-      </div>
+        <!-- Main Content -->
+        <div id="main-content">
+          <div class="header">
+            <div class="header-left">
+              <img src="icons/icon128.png" alt="SolveAI Logo" class="logo">
+              <h1 class="title">SolveAI</h1>
+            </div>
+          </div>
 
-      <!-- Premium Content -->
-      <div id="premium-content" style="display: none;">
-        <div class="content-section">
-          <h2>Premium Features</h2>
-          <div class="feature-card">
-            <h3>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div id="subscription-status" class="subscription-status">
+            <div class="subscription-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
               </svg>
-              Instant Answers
-            </h3>
-            <p>Select any text to get instant, accurate answers powered by advanced AI</p>
+            </div>
+            <div class="subscription-info">
+              <h3>Premium Plan</h3>
+              <p>Full access to all features</p>
+            </div>
           </div>
-          <div class="feature-card">
-            <h3>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
-              </svg>
-              Detailed Explanations
-            </h3>
-            <p>Get step-by-step explanations for complex questions with visual aids</p>
+
+          <!-- Premium Content -->
+          <div id="premium-content">
+            <div class="content-section">
+              <h2>Premium Features</h2>
+              <div class="feature-card">
+                <h3>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                  </svg>
+                  Instant Answers
+                </h3>
+                <p>Select any text to get instant, accurate answers powered by advanced AI</p>
+              </div>
+              <div class="feature-card">
+                <h3>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                  </svg>
+                  Detailed Explanations
+                </h3>
+                <p>Get step-by-step explanations for complex questions with visual aids</p>
+              </div>
+              <div class="feature-card">
+                <h3>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                  </svg>
+                  Unlimited Usage
+                </h3>
+                <p>No limits on the number of questions you can ask</p>
+              </div>
+            </div>
+
+            <div class="content-section">
+              <h2>Last Answer</h2>
+              <div id="last-answer">No answers yet. Select text on any webpage to get started!</div>
+            </div>
           </div>
-          <div class="feature-card">
-            <h3>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-              </svg>
-              Unlimited Usage
-            </h3>
-            <p>No limits on the number of questions you can ask</p>
+
+          <!-- Free Content -->
+          <div id="free-content">
+            <div class="content-section">
+              <h2>Upgrade to Premium</h2>
+              <div class="feature-card">
+                <h3>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                  </svg>
+                  Unlock All Features
+                </h3>
+                <p>Get unlimited access to instant answers and explanations</p>
+              </div>
+              <div class="feature-card">
+                <h3>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v20M2 12h20"></path>
+                  </svg>
+                  Advanced Capabilities
+                </h3>
+                <p>Access detailed explanations and step-by-step solutions</p>
+              </div>
+              <a href="https://calm-horse-4892b7.netlify.app/pricing" target="_blank" class="upgrade-button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+                Upgrade Now
+              </a>
+            </div>
           </div>
         </div>
 
-        <div class="content-section">
-          <h2>Last Answer</h2>
-          <div id="last-answer">No answers yet. Select text on any webpage to get started!</div>
-        </div>
+        <!-- Settings Content -->
+        <div id="settings-content" style="display: none;">
+          <div class="content-section">
+            <h2>Settings</h2>
+            <div class="feature-card">
+              <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                </svg>
+                Appearance
+              </h3>
+              <div class="settings-option">
+                <label for="darkMode">Dark Mode</label>
+                <input type="checkbox" id="darkMode" class="toggle-switch">
+              </div>
+            </div>
+            
+            <div class="feature-card">
+              <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="9" y1="3" x2="9" y2="21"></line>
+                </svg>
+                Sidebar
+              </h3>
+              <div class="settings-option">
+                <label for="showSidebarShortcut">Show Sidebar Shortcut</label>
+                <input type="checkbox" id="showSidebarShortcut" class="toggle-switch">
+              </div>
+            </div>
 
-        <button id="settings" class="button settings-button">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-          </svg>
-          Settings
-        </button>
+            <div class="feature-card">
+              <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"></path>
+                  <polyline points="13 2 13 9 20 9"></polyline>
+                </svg>
+                Links
+              </h3>
+              <div class="settings-links">
+                <button class="settings-link" id="report-bug">Report a Bug</button>
+                <button class="settings-link" id="terms">Terms & Conditions</button>
+                <button class="settings-link" id="privacy">Privacy Policy</button>
+              </div>
+            </div>
+
+            <div class="feature-card">
+              <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                Account
+              </h3>
+              <button class="settings-link danger" id="logout">Logout</button>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <!-- Free Content -->
-      <div id="free-content" style="display: none;">
-        <div class="content-section">
-          <h2>Upgrade to Premium</h2>
-          <div class="feature-card">
-            <h3>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
-              </svg>
-              Unlock All Features
-            </h3>
-            <p>Get unlimited access to instant answers and explanations</p>
-          </div>
-          <div class="feature-card">
-            <h3>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2v20M2 12h20"></path>
-              </svg>
-              Advanced Capabilities
-            </h3>
-            <p>Access detailed explanations and step-by-step solutions</p>
-          </div>
-          <a href="https://calm-horse-4892b7.netlify.app/pricing" target="_blank" class="upgrade-button">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"></path>
-            </svg>
-            Upgrade Now
-          </a>
-        </div>
+    <!-- Navigation Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-icon active" id="home-icon" title="Home">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </div>
+      <div class="sidebar-icon" id="chat-icon" title="Chat Mode">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </div>
+      <div class="sidebar-icon" id="settings-icon" title="Settings">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </div>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-icon" id="rate-icon" title="Rate Us">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      </div>
+      <div class="sidebar-icon" id="logout-icon" title="Logout">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
       </div>
     </div>
   </div>

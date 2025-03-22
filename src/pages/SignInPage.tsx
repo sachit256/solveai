@@ -172,7 +172,7 @@ export const SignInPage = () => {
         });
       }
 
-      window.location.href = 'http://localhost:5173/signin';
+      window.location.href = 'http://localhost:5173/student';
     } catch (err) {
       console.error('Sign in error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
