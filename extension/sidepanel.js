@@ -164,7 +164,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Show login screen with animation
   function showLoginScreen() {
     if (loginScreen && mainContent) {
+      // Hide all other content first
       mainContent.style.display = 'none';
+      settingsContent.style.display = 'none';
+      premiumContent.style.display = 'none';
+      freeContent.style.display = 'none';
+      
+      // Show login screen with animation
       loginScreen.style.display = 'flex';
       loginScreen.style.opacity = '0';
       loginScreen.style.transform = 'translateY(10px)';
@@ -341,6 +347,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Logout icon click handler
   logoutIcon.addEventListener('click', async () => {
     try {
+      // Reset active icon
+      setActiveIcon(homeIcon);
+      
+      // Hide all content sections first
+      hideContent(mainContent);
+      hideContent(settingsContent);
+      hideContent(premiumContent);
+      hideContent(freeContent);
+      
       // Clear all stored data
       await chrome.storage.local.clear();
       
@@ -349,11 +364,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="loading"></div>
       `;
       
-      // Show login screen
-      showLoginScreen();
+      // Reset login button state
+      if (loginButton) {
+        loginButton.disabled = false;
+        loginButton.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg>
+          Sign In
+        `;
+      }
       
-      // Reset icon state after short delay
+      // Show login screen after a short delay
       setTimeout(() => {
+        showLoginScreen();
+        
+        // Reset logout icon
         logoutIcon.innerHTML = `
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -361,7 +389,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <line x1="21" y1="12" x2="9" y2="12"></line>
           </svg>
         `;
-      }, 1000);
+      }, 300);
     } catch (error) {
       console.error('Error during logout:', error);
     }
