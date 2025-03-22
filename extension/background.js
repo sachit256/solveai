@@ -5,7 +5,6 @@ const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
 // OpenAI configuration
 const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY';
 
-// Handle messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Received internal message:', request);
   console.log('From sender:', sender);
