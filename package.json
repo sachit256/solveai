@@ -16,7 +16,9 @@
     "react-hot-toast": "^2.4.1",
     "@supabase/supabase-js": "^2.39.7",
     "react-router-dom": "^7.3.0",
-    "razorpay": "^2.9.2"
+    "razorpay": "^2.9.2",
+    "openai": "^4.28.0",
+    "nanoid": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

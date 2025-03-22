@@ -365,7 +365,17 @@ function initializeExtension() {
     return;
   }
 
-  createFloatingButton();
+  // Create the floating button
+  const fab = createFloatingButton();
+  
+  // Check saved preference for sidebar shortcut visibility, default to true
+  chrome.storage.local.get(['showSidebarShortcut'], (result) => {
+    if (fab) {
+      // Show by default unless explicitly set to false
+      fab.style.display = result.showSidebarShortcut === false ? 'none' : 'flex';
+    }
+  });
+  
   isInitialized = true;
 }
 
@@ -661,4 +671,14 @@ styles.textContent = `
   }
 `;
 
-document.head.appendChild(styles); 
+document.head.appendChild(styles);
+
+// Listen for messages from the extension
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'TOGGLE_SIDEBAR_SHORTCUT') {
+    const fab = document.getElementById('solveai-fab');
+    if (fab) {
+      fab.style.display = message.show ? 'flex' : 'none';
+    }
+  }
+}); 

@@ -20,30 +20,43 @@ export const SignUpPage = () => {
     setLoading(true);
 
     try {
-      const { data: { user }, error: signUpError } = await supabase.auth.signUp({
+      // First sign up the user with Supabase Auth
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            first_name: firstName,
-            last_name: lastName
+            first_name: firstName.trim(),
+            last_name: lastName.trim()
           }
         }
       });
       
       if (signUpError) throw signUpError;
       
-      if (user) {
+      if (authData?.user) {
         // Create user profile
         const { error: profileError } = await supabase
           .from('users')
           .insert([{
-            id: user.id,
-            first_name: firstName,
-            last_name: lastName
+            id: authData.user.id,
+            first_name: firstName.trim(),
+            last_name: lastName.trim()
           }]);
         
-        if (profileError) throw profileError;
+        // if (profileError) throw profileError;
+
+        // // Update user metadata to ensure it's properly set
+        // const { error: updateError } = await supabase.auth.updateUser({
+        //   data: {
+        //     first_name: firstName.trim(),
+        //     last_name: lastName.trim()
+        //   }
+        // });
+
+        // if (updateError) {
+        //   console.error('Error updating user metadata:', updateError);
+        // }
       }
       
       navigate('/');

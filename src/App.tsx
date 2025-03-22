@@ -14,6 +14,7 @@ import { TermsPage } from './pages/TermsPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { Toaster } from 'react-hot-toast';
+import { Footer } from './components/Footer';
 import { SubscriptionProvider } from './contexts/SubscriptionContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -40,27 +41,30 @@ function App() {
           }} />
           <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white dark:from-gray-900 dark:to-gray-950 text-gray-900 dark:text-gray-100">
             <Navbar />
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/pricing" element={<PricingPage />} />
-              <Route path="/features" element={<FeaturesPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/terms" element={<TermsPage />} />
-              <Route path="/privacy" element={<PrivacyPage />} />
-              <Route path="/student" element={
-                <ProtectedRoute requiresSubscription>
-                  <StudentBoardPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/signin" element={<SignInPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              } />
-            </Routes>
+            <main className="min-h-[calc(100vh-4rem)] pt-16">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/pricing" element={<PricingPage />} />
+                <Route path="/features" element={<FeaturesPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/terms" element={<TermsPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
+                <Route path="/student" element={
+                  <ProtectedRoute requiresSubscription>
+                    <StudentBoardPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="/signin" element={<SignInPage />} />
+                <Route path="/signup" element={<SignUpPage />} />
+                <Route path="/profile" element={
+                  <ProtectedRoute>
+                    <ProfilePage />
+                  </ProtectedRoute>
+                } />
+              </Routes>
+            </main>
+            <Footer />
           </div>
         </SubscriptionProvider>
       </AuthProvider>
