@@ -1,76 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Brain, Upload, ArrowRight, BookOpen, MessageSquare, FileText, Zap, Edit, Code, BookOpen as Book, List, Gift, Send, Copy, ThumbsUp, ThumbsDown, RotateCcw, Brain as BrainIcon } from 'lucide-react';
-import { LectureMode } from './LectureMode';
-import { nanoid } from 'nanoid';
-import { generateChatResponse } from '../lib/openai';
-import toast from 'react-hot-toast';
+import { Brain, Upload, ArrowRight, BookOpen, MessageSquare, FileText, Zap, Edit, Code, BookOpen as Book, List, Gift, Send } from 'lucide-react';
 
 interface ChatMessage {
   id: string;
   type: 'user' | 'bot';
   content: string;
-  timestamp: string;
 }
-
-interface SuggestionCard {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  examples?: string[];
-}
-
-const suggestionCards = [
-  {
-    icon: <BrainIcon className="w-6 h-6" />,
-    title: "Brainstorm Ideas",
-    description: "Get creative suggestions and explore new concepts",
-    examples: ["Help me brainstorm ideas for my research paper on climate change"]
-  },
-  {
-    icon: <Code className="w-6 h-6" />,
-    title: "Code Explanation",
-    description: "Get help understanding and writing code",
-    examples: ["Explain how async/await works in JavaScript"]
-  },
-  {
-    icon: <Book className="w-6 h-6" />,
-    title: "Study Concepts",
-    description: "Learn and understand complex topics",
-    examples: ["Explain quantum entanglement in simple terms"]
-  },
-  {
-    icon: <FileText className="w-6 h-6" />,
-    title: "Summarize Content",
-    description: "Get concise summaries of complex materials",
-    examples: ["Summarize this research paper on machine learning"]
-  },
-  {
-    icon: <MessageSquare className="w-6 h-6" />,
-    title: "Practice Speaking",
-    description: "Improve language and communication skills",
-    examples: ["Help me practice English conversation"]
-  },
-  {
-    icon: <Zap className="w-6 h-6" />,
-    title: "Quick Solutions",
-    description: "Get instant help with problems",
-    examples: ["Help me debug this error in my code"]
-  }
-];
 
 const StudentBoard: React.FC = () => {
   const [activeMode, setActiveMode] = useState<'lecture' | 'chatbot'>('lecture');
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [showSuggestions, setShowSuggestions] = useState(true);
-  const [retryingMessage, setRetryingMessage] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [processingContent, setProcessingContent] = useState(false);
-  const [activeStudyTab, setActiveStudyTab] = useState<'quiz' | 'flashcards' | 'summary' | 'notes'>('flashcards');
 
   // Check for dark mode preference
   useEffect(() => {
@@ -100,7 +44,13 @@ const StudentBoard: React.FC = () => {
   // Initialize bot welcome message
   useEffect(() => {
     if (activeMode === 'chatbot' && messages.length === 0) {
-      setShowSuggestions(true);
+      setMessages([
+        {
+          id: 'welcome',
+          type: 'bot',
+          content: "I'm your AI Assistant, ready to help you with a variety of tasks. Here are some ways we can work together:"
+        }
+      ]);
     }
   }, [activeMode, messages.length]);
 
@@ -111,147 +61,28 @@ const StudentBoard: React.FC = () => {
     }
   }, [messages]);
 
-  const handleCopyMessage = (content: string) => {
-    navigator.clipboard.writeText(content);
-    toast.success('Message copied to clipboard');
-  };
-
-  const handleThumbsUp = (messageId: string) => {
-    toast.success('Thanks for your feedback!');
-    // Here you could implement feedback tracking
-  };
-
-  const handleThumbsDown = (messageId: string) => {
-    toast.success('Thanks for your feedback!');
-    // Here you could implement feedback tracking
-  };
-
-  const handleRetry = async (messageId: string) => {
-    const messageIndex = messages.findIndex(m => m.id === messageId);
-    if (messageIndex === -1) return;
-
-    // Get the user message that triggered this response
-    const userMessage = messages[messageIndex - 1];
-    if (!userMessage || userMessage.type !== 'user') return;
-
-    setRetryingMessage(messageId);
-    try {
-      const response = await generateChatResponse([
-        ...messages.slice(0, messageIndex - 1).map(msg => ({
-          role: msg.type === 'user' ? 'user' as const : 'assistant' as const,
-          content: msg.content
-        })),
-        { role: 'user' as const, content: userMessage.content }
-      ]);
-
-      // Replace the old bot message with the new one
-      const newMessages = [...messages];
-      newMessages[messageIndex] = {
-        id: nanoid(),
-        type: 'bot',
-        content: response || "I apologize, but I couldn't generate a response. Please try again.",
-        timestamp: new Date().toLocaleTimeString()
-      };
-      setMessages(newMessages);
-      toast.success('Generated new response');
-    } catch (error) {
-      console.error('Error retrying response:', error);
-      toast.error('Failed to generate new response');
-    } finally {
-      setRetryingMessage(null);
-    }
-  };
-
-  const handleSendMessage = async () => {
+  const handleSendMessage = () => {
     if (!inputValue.trim()) return;
     
-    setLoading(true);
-    const timestamp = new Date().toLocaleTimeString();
-
     // Add user message
     const newUserMessage: ChatMessage = {
-      id: nanoid(),
+      id: Date.now().toString(),
       type: 'user',
-      content: inputValue,
-      timestamp
+      content: inputValue
     };
     
     setMessages(prev => [...prev, newUserMessage]);
     setInputValue('');
     
-    try {
-      const response = await generateChatResponse([
-        ...messages.map(msg => ({
-          role: msg.type === 'user' ? 'user' as const : 'assistant' as const,
-          content: msg.content
-        })),
-        { role: 'user' as const, content: inputValue }
-      ]);
-
+    // Simulate bot response
+    setTimeout(() => {
       const botResponse: ChatMessage = {
-        id: nanoid(),
+        id: (Date.now() + 1).toString(),
         type: 'bot',
-        content: response || "I apologize, but I couldn't generate a response. Please try again.",
-        timestamp: new Date().toLocaleTimeString()
+        content: `I've received your question: "${inputValue}". Here's my response...`
       };
-
       setMessages(prev => [...prev, botResponse]);
-      setShowSuggestions(false);
-    } catch (error) {
-      console.error('Error getting chat response:', error);
-      toast.error('Failed to get response. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSuggestionClick = (suggestion: SuggestionCard) => {
-    if (suggestion.examples && suggestion.examples.length > 0) {
-      const randomExample = suggestion.examples[Math.floor(Math.random() * suggestion.examples.length)];
-      setInputValue(randomExample);
-    }
-  };
-
-  const renderSuggestionButtons = () => {
-    const borderColors = [
-      'border-indigo-200 hover:border-indigo-400',
-      'border-purple-200 hover:border-purple-400',
-      'border-blue-200 hover:border-blue-400',
-      'border-green-200 hover:border-green-400',
-      'border-amber-200 hover:border-amber-400',
-      'border-rose-200 hover:border-rose-400'
-    ];
-
-    const iconColors = [
-      'text-indigo-500',
-      'text-purple-500',
-      'text-blue-500',
-      'text-green-500',
-      'text-amber-500',
-      'text-rose-500'
-    ];
-
-    return (
-      <div className="grid grid-cols-2 gap-2 px-2">
-        {suggestionCards.map((card, index) => (
-          <button
-            key={index}
-            onClick={() => handleSuggestionClick(card)}
-            className={`flex items-start p-2 bg-white dark:bg-gray-800 rounded-md border ${borderColors[index]} dark:border-opacity-25 dark:hover:border-opacity-50 transition-all duration-200 text-left group hover:shadow-sm w-full`}
-          >
-            <div className={`flex-shrink-0 p-1 ${iconColors[index]} dark:text-opacity-90 group-hover:scale-110 transition-transform`}>
-              {card.icon}
-            </div>
-            <div className="ml-2 min-w-0">
-              <h3 className="text-xs font-medium text-gray-900 dark:text-white line-clamp-1">{card.title}</h3>
-              <p className="text-[10px] text-gray-500 dark:text-gray-400 line-clamp-1">
-                {card.description}
-              </p>
-            </div>
-          </button>
-        ))}
-      </div>
-    );
+    }, 1000);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -262,25 +93,45 @@ const StudentBoard: React.FC = () => {
   };
 
   const createNewChat = () => {
-    // Clear messages and show suggestions
     setMessages([]);
     setSelectedChat('new-chat-' + Date.now());
-    setInputValue('');
   };
 
-  const handleProcessContent = (type: string) => {
-    setProcessingContent(true);
-    // Simulate processing delay
-    setTimeout(() => {
-      setProcessingContent(false);
-      setActiveStudyTab(type as 'quiz' | 'flashcards' | 'summary' | 'notes');
-    }, 2000);
+  // Render suggestion buttons for the chatbot
+  const renderSuggestionButtons = () => {
+    const suggestions = [
+      { icon: <Brain className="w-5 h-5" />, text: 'Brainstorm ideas' },
+      { icon: <Code className="w-5 h-5" />, text: 'Write & explain code' },
+      { icon: <Book className="w-5 h-5" />, text: 'Explain concepts' },
+      { icon: <List className="w-5 h-5" />, text: 'Summarize text' },
+      { icon: <Gift className="w-5 h-5" />, text: 'Surprise me' },
+      { icon: <FileText className="w-5 h-5" />, text: 'Make a plan' }
+    ];
+
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-6 mb-8">
+        {suggestions.map((suggestion, index) => (
+          <button
+            key={index}
+            className="flex items-center gap-2 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
+            onClick={() => setInputValue(suggestion.text)}
+          >
+            <div className="text-primary-600 dark:text-primary-400">
+              {suggestion.icon}
+            </div>
+            <span className="text-gray-700 dark:text-gray-300 text-sm font-medium">
+              {suggestion.text}
+            </span>
+          </button>
+        ))}
+      </div>
+    );
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Mode selector tabs */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm mb-10 p-1.5 inline-flex items-center sticky top-20 z-10">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm mb-10 p-1.5 inline-flex items-center">
         <button 
           onClick={() => setActiveMode('lecture')}
           className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2
@@ -348,8 +199,29 @@ const StudentBoard: React.FC = () => {
             </div>
           </div>
 
-          {/* LectureMode Component */}
-          <LectureMode onProcessContent={handleProcessContent} />
+          {/* Input section */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+              Upload or link a lecture
+            </h2>
+            
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex-1 flex items-center bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3">
+                <input
+                  type="text"
+                  placeholder="Enter YouTube link or upload a video file..."
+                  className="flex-1 bg-transparent border-none focus:ring-0 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                />
+                <button className="text-primary-600 dark:text-primary-400 p-2 hover:text-primary-700 dark:hover:text-primary-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                  <Upload className="w-5 h-5" />
+                </button>
+              </div>
+              <button className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-sm hover:shadow flex items-center justify-center gap-2 md:w-auto w-full">
+                Process Lecture
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
       ) : (
         /* Chatbot UI */
@@ -359,63 +231,21 @@ const StudentBoard: React.FC = () => {
             <div className="p-4">
               <button 
                 onClick={createNewChat}
-                className="w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2.5 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2"
+                className="w-full bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-lg font-medium transition-colors shadow-sm hover:shadow flex items-center justify-center gap-2"
               >
-                <MessageSquare className="w-4 h-4" />
                 New Chat
               </button>
               
-              <div className="mt-4">
-                <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 px-1">Recent chats</div>
+              <div className="mt-6">
+                <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Recent chats</div>
                 <div className="space-y-1">
                   <button 
-                    className="w-full text-left px-3 py-2 rounded-md text-sm flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-600 dark:text-gray-300 group transition-colors"
+                    className="w-full text-left px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
                     onClick={() => setSelectedChat('chat-1')}
                   >
-                    <MessageSquare className="w-4 h-4 text-indigo-500" />
-                    <div className="truncate">Let's brainstorm ideas...</div>
+                    <MessageSquare className="w-4 h-4" />
+                    <div className="truncate">Let's brainstorm ideas about...</div>
                   </button>
-                </div>
-              </div>
-              
-              {/* Chat Info Section */}
-              <div className="mt-4 space-y-3">
-                <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-md">
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-amber-500" />
-                    Chat Tips
-                  </h3>
-                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
-                    <li className="flex items-center gap-2">
-                      <ArrowRight className="w-3.5 h-3.5 text-gray-400" />
-                      Press Enter to send
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <ArrowRight className="w-3.5 h-3.5 text-gray-400" />
-                      Shift + Enter for new line
-                    </li>
-                  </ul>
-                </div>
-                
-                <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-md">
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-green-500" />
-                    Session Stats
-                  </h3>
-                  <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                    <div className="flex items-center justify-between">
-                      <span>Messages</span>
-                      <span className="font-medium bg-white dark:bg-gray-700 px-2 py-1 rounded">
-                        {messages.length}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Duration</span>
-                      <span className="font-medium bg-white dark:bg-gray-700 px-2 py-1 rounded">
-                        {messages.length > 0 ? '10m' : '0m'}
-                      </span>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -435,97 +265,35 @@ const StudentBoard: React.FC = () => {
             
             {/* Messages area */}
             <div className="flex-1 overflow-y-auto p-4">
-              {/* Suggestion cards with reduced margin */}
-              <div className="mb-2">
-                {renderSuggestionButtons()}
-                <p className="text-gray-500 dark:text-gray-400 text-[10px] mt-2 text-center">
-                  Click a suggestion above to get started, or type your own question below!
-                </p>
-              </div>
-              
-              {/* Chat messages */}
               {messages.length > 0 ? (
-                <>
-                  <div className="space-y-6">
-                    {messages.map((message) => (
+                <div className="space-y-6">
+                  {messages.map((message) => (
+                    <div 
+                      key={message.id} 
+                      className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
                       <div 
-                        key={message.id} 
-                        className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                        className={`rounded-lg px-4 py-3 ${
+                          message.type === 'user' 
+                            ? 'bg-primary-600 text-white' 
+                            : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700'
+                        }`}
                       >
-                        <div 
-                          className={`rounded-lg px-4 py-3 ${
-                            message.type === 'user' 
-                              ? 'bg-primary-600 text-white' 
-                              : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 max-w-3xl'
-                          }`}
-                        >
-                          <div className="flex-1">
-                            <div className={message.type === 'user' ? 'text-white' : 'text-gray-900 dark:text-gray-100'}>
-                              {message.content}
-                            </div>
-                            <div className="flex items-center gap-4 mt-2">
-                              <button 
-                                className={`${
-                                  message.type === 'user'
-                                    ? 'text-white/60 hover:text-white'
-                                    : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
-                                } transition-colors`}
-                                onClick={() => handleCopyMessage(message.content)}
-                                title="Copy message"
-                              >
-                                <Copy className="w-4 h-4" />
-                              </button>
-                              <button 
-                                className={`${
-                                  message.type === 'user'
-                                    ? 'text-white/60 hover:text-white'
-                                    : 'text-gray-400 hover:text-green-500'
-                                } transition-colors`}
-                                onClick={() => handleThumbsUp(message.id)}
-                                title="This was helpful"
-                              >
-                                <ThumbsUp className="w-4 h-4" />
-                              </button>
-                              <button 
-                                className={`${
-                                  message.type === 'user'
-                                    ? 'text-white/60 hover:text-white'
-                                    : 'text-gray-400 hover:text-red-500'
-                                } transition-colors`}
-                                onClick={() => handleThumbsDown(message.id)}
-                                title="This wasn't helpful"
-                              >
-                                <ThumbsDown className="w-4 h-4" />
-                              </button>
-                              <button 
-                                className={`${
-                                  message.type === 'user'
-                                    ? 'text-white/60 hover:text-white'
-                                    : 'text-gray-400 hover:text-primary-500'
-                                } transition-colors ${retryingMessage === message.id ? 'animate-spin' : ''}`}
-                                onClick={() => handleRetry(message.id)}
-                                disabled={retryingMessage === message.id}
-                                title="Regenerate response"
-                              >
-                                <RotateCcw className={`w-4 h-4 ${retryingMessage === message.id ? 'animate-spin' : ''}`} />
-                              </button>
-                              <span className={`text-xs ${
-                                message.type === 'user'
-                                  ? 'text-white/60'
-                                  : 'text-gray-400'
-                              }`}>
-                                {message.timestamp}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
+                        {message.content}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                   <div ref={messagesEndRef} />
-                </>
+                </div>
               ) : (
-                <div ref={messagesEndRef} />
+                <div className="h-full flex flex-col items-center justify-center">
+                  <div className="max-w-md text-center">
+                    {renderSuggestionButtons()}
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">
+                      Just type your question below or click one of the suggestions above to get started!
+                    </p>
+                  </div>
+                </div>
               )}
             </div>
             
@@ -562,4 +330,4 @@ const StudentBoard: React.FC = () => {
   );
 };
 
-export default StudentBoard
+export default StudentBoard; 

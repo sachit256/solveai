@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     subscriptionStatusElement.textContent = 
       result.subscriptionStatus === 'premium' ? '✨ Premium Plan' :
       result.subscriptionStatus === 'team' ? '👥 Team Plan' :
-      'Free Plan';
+      '🔄 Free Plan';
   });
 
   // Update subscription status UI
