@@ -99,7 +99,7 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: data.amount,
         currency: "INR",
-        name: "SolveAI Premium",
+        name: "BrainlyAi Premium",
         description: `Subscribe to ${planId} plan`,
         order_id: data.id,
         notes: {

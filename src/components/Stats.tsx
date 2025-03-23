@@ -57,7 +57,7 @@ export const Stats = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Trusted by Students From</h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Join students from world-renowned institutions who use SolveAI to enhance their learning experience
+            Join students from world-renowned institutions who use BrainlyAi to enhance their learning experience
           </p>
         </div>
 

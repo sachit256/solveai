@@ -22,7 +22,7 @@ export const Hero = () => {
         Just drag over any question on your screen and get instant answers with detailed explanations.
       </p>
       <a
-        href="https://chrome.google.com/webstore/detail/solveai/your-extension-id"
+        href="https://chrome.google.com/webstore/detail/brainlyai/your-extension-id"
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex items-center px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-medium text-lg mb-16 space-x-2"

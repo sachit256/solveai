@@ -65,7 +65,7 @@ export const AboutPage = () => {
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl font-bold mb-6">Our Story</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-              Founded in 2023, SolveAI emerged from a simple observation: students everywhere struggle with getting immediate, quality help when they need it most. Our team of educators and AI experts came together to create a solution that would be like having a personal tutor available 24/7.
+              Founded in 2023, BrainlyAi emerged from a simple observation: students everywhere struggle with getting immediate, quality help when they need it most. Our team of educators and AI experts came together to create a solution that would be like having a personal tutor available 24/7.
             </p>
             <p className="text-lg text-gray-600 dark:text-gray-300">
               Today, we serve millions of students worldwide, helping them understand complex concepts, solve challenging problems, and achieve their academic goals. Our AI technology continues to evolve, becoming smarter and more helpful with every interaction.

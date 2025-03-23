@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setActiveIcon(rateIcon);
     // Open Chrome Web Store in new tab
     chrome.tabs.create({ 
-      url: 'https://chrome.google.com/webstore/detail/solveai/your-extension-id/reviews'
+      url: 'https://chrome.google.com/webstore/detail/brainlyai/your-extension-id/reviews'
     });
   });
 

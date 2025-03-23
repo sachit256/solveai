@@ -6,7 +6,7 @@ export const FAQ = () => {
 
   const faqs = [
     {
-      question: "How does SolveAI work?",
+      question: "How does BrainlyAi work?",
       answer: "Simply take a photo of your question or problem, and our AI will analyze it instantly. You'll receive a detailed solution with step-by-step explanations within seconds."
     },
     {
@@ -14,7 +14,7 @@ export const FAQ = () => {
       answer: "We support a wide range of subjects including Mathematics, Physics, Chemistry, Biology, Computer Science, History, Literature, and Economics. Premium users get access to all subjects."
     },
     {
-      question: "Can I try SolveAI before subscribing?",
+      question: "Can I try BrainlyAi before subscribing?",
       answer: "Yes! You can start with our free plan that includes 5 questions per day. This allows you to experience our platform before choosing a paid subscription."
     },
     {
@@ -40,7 +40,7 @@ export const FAQ = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-center mb-12">
-            Everything you need to know about SolveAI
+            Everything you need to know about BrainlyAi
           </h2>
         </div>
 

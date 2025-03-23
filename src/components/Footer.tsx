@@ -11,7 +11,7 @@ export const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <Brain className="w-8 h-8 text-primary-600" />
-              <span className="text-xl font-bold">SolveAI</span>
+              <span className="text-xl font-bold">BrainlyAi</span>
             </Link>
             <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
               Transform your learning experience with AI-powered solutions. Get instant answers, detailed explanations, and personalized study materials.
@@ -75,7 +75,7 @@ export const Footer = () => {
 
         <div className="mt-8 pt-8 border-t border-gray-200/50 dark:border-gray-800/50">
           <p className="text-gray-500 dark:text-gray-400 text-sm text-center">
-            © {new Date().getFullYear()} SolveAI. All rights reserved.
+            © {new Date().getFullYear()} BrainlyAi. All rights reserved.
           </p>
         </div>
       </div>

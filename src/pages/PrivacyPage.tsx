@@ -19,7 +19,7 @@ export const PrivacyPage = () => {
           <div className="max-w-3xl mx-auto prose dark:prose-invert">
             <h2>1. Introduction</h2>
             <p>
-              At SolveAI, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.
+              At BrainlyAi, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.
             </p>
 
             <h2>2. Information We Collect</h2>
@@ -95,7 +95,7 @@ export const PrivacyPage = () => {
               For questions about this Privacy Policy, please contact us at:
             </p>
             <ul>
-              <li>Email: privacy@solveai.com</li>
+              <li>Email: privacy@brainlyai.app</li>
               <li>Address: 123 AI Street, Tech Valley, CA 94025</li>
             </ul>
           </div>

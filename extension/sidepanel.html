@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html class="dark">
 <head>
-  <title>SolveAI</title>
+  <title>BrainlyAi</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -19,6 +19,16 @@
       --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       --transition: all 0.2s ease-in-out;
       --sidebar-width: 60px;
+    }
+
+    .dark {
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --bg-primary: #1f2937;
+      --bg-secondary: #111827;
+      --border-color: #374151;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
     }
 
     * {
@@ -117,10 +127,10 @@
       color: var(--text-secondary);
     }
 
-    .settings-button:hover {
-      background-color: var(--bg-secondary);
+    .dark .settings-button:hover {
+      background-color: var(--bg-primary);
       border-color: var(--primary);
-      color: var(--primary);
+      color: var(--primary-light);
     }
 
     .signout-button {
@@ -196,6 +206,11 @@
       font-size: 24px;
       background: var(--bg-secondary);
       color: var(--primary);
+    }
+
+    .dark .subscription-icon {
+      background: var(--bg-secondary);
+      color: var(--primary-light);
     }
 
     .subscription-info {
@@ -577,7 +592,7 @@
       <div class="container">
         <!-- Login Screen -->
         <div id="login-screen">
-          <h2>Welcome to SolveAI</h2>
+          <h2>Welcome to BrainlyAi</h2>
           <p>Get instant answers and explanations for any question. Select text on any webpage to get started!</p>
           <button id="login-button" class="button">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -593,8 +608,8 @@
         <div id="main-content">
           <div class="header">
             <div class="header-left">
-              <img src="icons/icon128.png" alt="SolveAI Logo" class="logo">
-              <h1 class="title">SolveAI</h1>
+              <img src="icons/icon128.png" alt="BrainlyAi Logo" class="logo">
+              <h1 class="title">BrainlyAi</h1>
             </div>
           </div>
 

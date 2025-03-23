@@ -59,8 +59,8 @@ export const ContactPage = () => {
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email",
-      content: "support@solveai.com",
-      link: "mailto:support@solveai.com"
+      content: "support@brainlyai.app",
+      link: "mailto:support@brainlyai.app"
     },
     {
       icon: <Phone className="w-6 h-6" />,

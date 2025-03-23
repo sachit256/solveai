@@ -1,9 +1,39 @@
-// Supabase configuration
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+// Load environment variables
+let SUPABASE_URL;
+let SUPABASE_ANON_KEY;
+let OPENAI_API_KEY;
 
-// OpenAI configuration
-const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY';
+// Function to load environment variables
+async function loadEnvVariables() {
+  try {
+    const response = await fetch(chrome.runtime.getURL('.env'));
+    const text = await response.text();
+    
+    // Parse .env file
+    const envVars = text.split('\n').reduce((acc, line) => {
+      const [key, value] = line.split('=');
+      if (key && value) {
+        acc[key.trim()] = value.trim();
+      }
+      return acc;
+    }, {});
+
+    // Set variables
+    SUPABASE_URL = envVars.SUPABASE_URL;
+    SUPABASE_ANON_KEY = envVars.SUPABASE_ANON_KEY;
+    OPENAI_API_KEY = envVars.OPENAI_API_KEY;
+    
+    console.log('Environment variables loaded successfully');
+  } catch (error) {
+    console.error('Error loading environment variables:', error);
+  }
+}
+
+// Load environment variables when extension starts
+loadEnvVariables();
+
+// Track sidepanel state
+let isSidePanelOpen = false;
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Received internal message:', request);
@@ -18,10 +48,26 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-// Open side panel when extension icon is clicked
-chrome.action.onClicked.addListener((tab) => {
-  console.log('Extension icon clicked, opening side panel');
-  chrome.sidePanel.open({ windowId: tab.windowId });
+// Toggle side panel when extension icon is clicked
+chrome.action.onClicked.addListener(async (tab) => {
+  console.log('Extension icon clicked, toggling side panel');
+  try {
+    // Always open the side panel - Chrome will handle the toggle behavior automatically
+    await chrome.sidePanel.open({ windowId: tab.windowId });
+  } catch (error) {
+    console.error('Error opening sidepanel:', error);
+  }
+});
+
+// Handle keyboard shortcut
+chrome.commands.onCommand.addListener((command) => {
+  if (command === '_execute_action') {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]) {
+        chrome.action.onClicked.dispatch(tabs[0]);
+      }
+    });
+  }
 });
 
 // Handle messages from web page

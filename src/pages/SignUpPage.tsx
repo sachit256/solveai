@@ -73,11 +73,11 @@ export const SignUpPage = () => {
         <div>
           <Link to="/" className="flex items-center justify-center gap-2 mb-8">
             <Brain className="w-10 h-10 text-primary-600" />
-            <span className="text-2xl font-bold">SolveAI</span>
+            <span className="text-2xl font-bold">BrainlyAi</span>
           </Link>
           <h2 className="text-3xl font-bold text-center">Create your account</h2>
           <p className="mt-2 text-center text-gray-600 dark:text-gray-400">
-            Join thousands of students using SolveAI
+            Join thousands of students using BrainlyAi
           </p>
         </div>
 

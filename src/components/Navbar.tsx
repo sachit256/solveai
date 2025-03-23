@@ -25,7 +25,7 @@ export const Navbar = () => {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <Brain className="w-8 h-8 text-primary-600" />
-          <span className="text-xl font-bold">SolveAI</span>
+          <span className="text-xl font-bold">BrainlyAi</span>
         </Link>
         <div className="flex items-center space-x-6">
           <nav className="hidden md:flex items-center space-x-6">

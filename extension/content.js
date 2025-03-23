@@ -7,14 +7,14 @@ let isInitialized = false;
 // Create and initialize the floating action button
 function createFloatingButton() {
   // Check if button already exists anywhere in the document
-  const existingButton = document.querySelector('#solveai-fab');
+  const existingButton = document.querySelector('#brainlyai-fab');
   if (existingButton) {
     floatingButton = existingButton;
     return existingButton;
   }
 
   const button = document.createElement('div');
-  button.id = 'solveai-fab';
+  button.id = 'brainlyai-fab';
   button.innerHTML = `
     <div class="fab-icon">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,12 +35,12 @@ function createFloatingButton() {
 
 // Create and show student board
 function createStudentBoard() {
-  if (document.querySelector('#solveai-student-board')) {
-    return document.querySelector('#solveai-student-board');
+  if (document.querySelector('#brainlyai-student-board')) {
+    return document.querySelector('#brainlyai-student-board');
   }
 
   const board = document.createElement('div');
-  board.id = 'solveai-student-board';
+  board.id = 'brainlyai-student-board';
   board.innerHTML = `
     <div class="student-board-content">
       <div class="board-header">
@@ -48,7 +48,7 @@ function createStudentBoard() {
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
           </svg>
-          <span>SolveAI</span>
+          <span>BrainlyAi</span>
         </div>
         <button class="close-board">&times;</button>
       </div>
@@ -124,14 +124,14 @@ function showStudentBoard() {
 // Create and initialize the answer popup
 function createAnswerPopup() {
   // Check if popup already exists anywhere in the document
-  const existingPopup = document.querySelector('#solveai-popup');
+  const existingPopup = document.querySelector('#brainlyai-popup');
   if (existingPopup) {
     answerPopup = existingPopup;
     return existingPopup;
   }
 
   const popup = document.createElement('div');
-  popup.id = 'solveai-popup';
+  popup.id = 'brainlyai-popup';
   document.body.appendChild(popup);
   answerPopup = popup;
   return popup;
@@ -353,8 +353,8 @@ function showErrorPopup(message) {
 function initializeExtension() {
   if (isInitialized) {
     // Check if elements still exist in DOM
-    const fabExists = document.querySelector('#solveai-fab');
-    const popupExists = document.querySelector('#solveai-popup');
+    const fabExists = document.querySelector('#brainlyai-fab');
+    const popupExists = document.querySelector('#brainlyai-popup');
     
     if (!fabExists) {
       createFloatingButton();
@@ -413,8 +413,8 @@ if (document.readyState === 'loading') {
 // Reinitialize when the document body changes (for single-page applications)
 const observer = new MutationObserver((mutations) => {
   // Check if our elements are still in the DOM
-  const fabExists = document.querySelector('#solveai-fab');
-  const popupExists = document.querySelector('#solveai-popup');
+  const fabExists = document.querySelector('#brainlyai-fab');
+  const popupExists = document.querySelector('#brainlyai-popup');
   
   if (!fabExists || (answerPopup && !popupExists)) {
     initializeExtension();
@@ -429,7 +429,7 @@ observer.observe(document.body, {
 // Update the styles
 const styles = document.createElement('style');
 styles.textContent = `
-  #solveai-fab {
+  #brainlyai-fab {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -445,13 +445,13 @@ styles.textContent = `
     color: #4F46E5;
   }
 
-  #solveai-fab:hover {
+  #brainlyai-fab:hover {
     transform: translateY(-2px);
     background: rgba(255, 255, 255, 0.9);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
-  #solveai-fab.active {
+  #brainlyai-fab.active {
     background: #4F46E5;
     color: white;
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
@@ -468,7 +468,7 @@ styles.textContent = `
     font-weight: 500;
   }
 
-  #solveai-popup {
+  #brainlyai-popup {
     position: fixed;
     background: #1F2937;
     border-radius: 12px;
@@ -539,7 +539,7 @@ styles.textContent = `
     100% { transform: rotate(360deg); }
   }
 
-  #solveai-student-board {
+  #brainlyai-student-board {
     position: fixed;
     top: 0;
     left: 0;
@@ -676,7 +676,7 @@ document.head.appendChild(styles);
 // Listen for messages from the extension
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'TOGGLE_SIDEBAR_SHORTCUT') {
-    const fab = document.getElementById('solveai-fab');
+    const fab = document.getElementById('brainlyai-fab');
     if (fab) {
       fab.style.display = message.show ? 'flex' : 'none';
     }

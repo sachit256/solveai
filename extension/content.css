@@ -1,43 +1,60 @@
-#solveai-fab {
+#brainlyai-fab {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background: #4F46E5;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #4F46E5, #4338CA);
   color: white;
   border-radius: 24px;
-  padding: 8px 16px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
   z-index: 10000;
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 14px;
+  font-weight: 500;
   transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
 }
 
-#solveai-fab:hover {
-  background: #4338CA;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.1), 0 3px 6px -1px rgba(0, 0, 0, 0.06);
+#brainlyai-fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.4);
+  background: linear-gradient(135deg, #4338CA, #3730A3);
 }
 
-#solveai-fab.active {
-  background: #DC2626;
+#brainlyai-fab.active {
+  background: linear-gradient(135deg, #DC2626, #B91C1C);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
 
-#solveai-fab .fab-icon {
+#brainlyai-fab.active:hover {
+  background: linear-gradient(135deg, #B91C1C, #991B1B);
+  box-shadow: 0 8px 16px rgba(220, 38, 38, 0.4);
+}
+
+#brainlyai-fab .fab-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s ease;
 }
 
-#solveai-fab.active .fab-icon {
+#brainlyai-fab.active .fab-icon {
   transform: rotate(45deg);
 }
 
-#solveai-popup {
+#brainlyai-fab .fab-label {
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+#brainlyai-popup {
   position: fixed;
   z-index: 10000;
   background: white;
@@ -104,7 +121,7 @@
 
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
-  #solveai-popup {
+  #brainlyai-popup {
     background: #1F2937;
   }
   
@@ -130,21 +147,21 @@
   }
 }
 
-#solveai-popup::-webkit-scrollbar {
+#brainlyai-popup::-webkit-scrollbar {
   width: 8px;
 }
 
-#solveai-popup::-webkit-scrollbar-track {
+#brainlyai-popup::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
 
-#solveai-popup::-webkit-scrollbar-thumb {
+#brainlyai-popup::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
 }
 
-#solveai-popup::-webkit-scrollbar-thumb:hover {
+#brainlyai-popup::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 

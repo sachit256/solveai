@@ -19,12 +19,12 @@ export const TermsPage = () => {
           <div className="max-w-3xl mx-auto prose dark:prose-invert">
             <h2>1. Acceptance of Terms</h2>
             <p>
-              By accessing and using SolveAI's services, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use our services.
+              By accessing and using BrainlyAi's services, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use our services.
             </p>
 
             <h2>2. Description of Service</h2>
             <p>
-              SolveAI provides an AI-powered educational assistance platform that helps students understand and solve academic problems. Our services include but are not limited to:
+              BrainlyAi provides an AI-powered educational assistance platform that helps students understand and solve academic problems. Our services include but are not limited to:
             </p>
             <ul>
               <li>Problem-solving assistance</li>
@@ -89,7 +89,7 @@ export const TermsPage = () => {
               For questions about these terms, please contact us at:
             </p>
             <ul>
-              <li>Email: legal@solveai.com</li>
+              <li>Email: legal@brainlyai.app</li>
               <li>Address: 123 AI Street, Tech Valley, CA 94025</li>
             </ul>
           </div>
