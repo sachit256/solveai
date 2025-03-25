@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               'Upgrade to premium for full access to all features'}
           </p>
           ${!isPremium ? 
-            `<a href="https://calm-horse-4892b7.netlify.app/pricing" 
+            `<a href="https://brainlyai.in/pricing" 
                 target="_blank" 
                 style="color: #4F46E5; text-decoration: none; font-weight: 500; display: inline-block; margin-top: 8px;">
               Upgrade to Premium

@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
 
         const tab = await chrome.tabs.create({
-          url: 'http://localhost:5173/signin'
+          url: 'https://www.brainlyai.in/signin'
         });
         console.log('Opened signin page:', tab);
       } catch (error) {
@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   chatIcon.addEventListener('click', () => {
     setActiveIcon(chatIcon);
     // Open webapp in new tab
-    chrome.tabs.create({ url: 'http://localhost:5173/student' });
+    chrome.tabs.create({ url: 'https://www.brainlyai.in/student' });
   });
 
   // Settings icon click handler
@@ -461,7 +461,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (reportBug) {
     reportBug.addEventListener('click', () => {
       chrome.tabs.create({
-        url: 'https://calm-horse-4892b7.netlify.app/report-bug'
+        url: 'https://brainlyai.in/report-bug'
       });
     });
   }
@@ -470,7 +470,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (terms) {
     terms.addEventListener('click', () => {
       chrome.tabs.create({
-        url: 'https://calm-horse-4892b7.netlify.app/terms'
+        url: 'https://brainlyai.in/terms'
       });
     });
   }
@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (privacy) {
     privacy.addEventListener('click', () => {
       chrome.tabs.create({
-        url: 'https://calm-horse-4892b7.netlify.app/privacy'
+        url: 'https://brainlyai.in/privacy'
       });
     });
   }

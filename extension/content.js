@@ -306,7 +306,7 @@ function showUpgradePopup() {
             This feature is available exclusively to premium users.
             Upgrade now to unlock all features!
           </p>
-          <a href="https://calm-horse-4892b7.netlify.app/pricing" 
+          <a href="https://brainlyai.in/pricing" 
              target="_blank" 
              class="button" 
              style="display: inline-block; background: #4F46E5; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 500;">

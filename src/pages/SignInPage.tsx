@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Brain } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Brain, Mail, Lock, ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 // Type declarations for Chrome extension API
@@ -19,17 +20,29 @@ declare global {
   const chrome: Window['chrome'];
 }
 
-// Extension ID for development and production
-const EXTENSION_ID = 'ipkfbbjjlklmccnlhebanolgjhhjdidg'; // Replace with your actual extension ID
+// Extension IDs for different environments
+const EXTENSION_IDS = {
+  development: 'ipkfbbjjlklmccnlhebanolgjhhjdidg',
+  production: 'YOUR_PRODUCTION_EXTENSION_ID' // Replace with your production extension ID
+};
+
+// Get the current environment's extension ID
+const getExtensionId = () => {
+  const isDevelopment = window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1';
+  return isDevelopment ? EXTENSION_IDS.development : EXTENSION_IDS.production;
+};
 
 // Debug function to check extension availability
 const debugChromeRuntime = () => {
+  const extensionId = getExtensionId();
   console.log('Chrome object available:', typeof window.chrome !== 'undefined');
   console.log('Chrome runtime available:', typeof window.chrome?.runtime !== 'undefined');
   console.log('Chrome sendMessage available:', typeof window.chrome?.runtime?.sendMessage !== 'undefined');
-  console.log('Using Extension ID:', EXTENSION_ID);
+  console.log('Using Extension ID:', extensionId);
   console.log('Current URL:', window.location.href);
   console.log('Current Origin:', window.location.origin);
+  console.log('Environment:', window.location.hostname === 'localhost' ? 'development' : 'production');
 };
 
 interface UserData {
@@ -52,6 +65,27 @@ export const SignInPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5
+      }
+    }
+  };
+
   const notifyExtension = async (userData: UserData) => {
     try {
       console.log('=== Extension Communication Debug ===');
@@ -69,8 +103,8 @@ export const SignInPage = () => {
       const access_token = sessionData?.session?.access_token;
 
       console.log('Sending message to extension...');
-      // Try to send message to extension
-      const response = await window.chrome.runtime.sendMessage(EXTENSION_ID, {
+      // Try to send message to extension using environment-specific ID
+      const response = await window.chrome.runtime.sendMessage(getExtensionId(), {
         type: 'SIGNIN_SUCCESS',
         userData: {
           email: userData.email,
@@ -158,7 +192,7 @@ export const SignInPage = () => {
 
       // Store session data in Chrome storage
       if (window.chrome?.runtime?.sendMessage) {
-        await window.chrome.runtime.sendMessage(EXTENSION_ID, {
+        await window.chrome.runtime.sendMessage(getExtensionId(), {
           type: 'STORE_SESSION',
           session: {
             access_token: access_token,
@@ -172,7 +206,7 @@ export const SignInPage = () => {
         });
       }
 
-      window.location.href = 'http://localhost:5173/student';
+      window.location.href = 'https://www.brainlyai.in/student';
     } catch (err) {
       console.error('Sign in error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -182,74 +216,135 @@ export const SignInPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-white dark:from-gray-900 dark:to-gray-950 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl">
-        <div>
-          <Link to="/" className="flex items-center justify-center gap-2 mb-8">
-            <Brain className="w-10 h-10 text-primary-600" />
-            <span className="text-2xl font-bold">BrainlyAi</span>
-          </Link>
-          <h2 className="text-3xl font-bold text-center">Welcome back</h2>
-          <p className="mt-2 text-center text-gray-600 dark:text-gray-400">
-            Sign in to your account to continue
-          </p>
-        </div>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-[rgb(79,70,229)]/5 via-transparent to-transparent dark:from-[rgb(79,70,229)]/10" />
+        <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-gradient-to-br from-[rgb(79,70,229)]/10 to-transparent rounded-full blur-3xl dark:from-[rgb(79,70,229)]/20" />
+        <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-gradient-to-tl from-[rgb(79,70,229)]/10 to-transparent rounded-full blur-3xl dark:from-[rgb(79,70,229)]/20" />
+        
+        {/* Additional decorative elements */}
+        <div className="absolute top-1/4 right-1/4 w-24 h-24 bg-[rgb(79,70,229)]/10 rounded-full blur-xl dark:bg-[rgb(79,70,229)]/20" />
+        <div className="absolute bottom-1/4 left-1/4 w-32 h-32 bg-[rgb(79,70,229)]/10 rounded-full blur-xl dark:bg-[rgb(79,70,229)]/20" />
+      </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium">
-                Email address
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="mt-1 block w-full px-4 py-3 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary-500"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="mt-1 block w-full px-4 py-3 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary-500"
-              />
-            </div>
-          </div>
-
-          {error && (
-            <div className="text-red-500 text-sm text-center">{error}</div>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
-          >
-            {loading ? 'Signing in...' : 'Sign in'}
-          </button>
-
-          <div className="text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Don't have an account?{' '}
-              <Link
-                to="/signup"
-                className="font-medium text-primary-600 hover:text-primary-500"
-              >
-                Sign up
-              </Link>
+      <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="max-w-md w-full space-y-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-8 rounded-2xl shadow-xl relative"
+        >
+          <motion.div variants={itemVariants}>
+            <Link to="/" className="flex items-center justify-center gap-2 mb-8 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-[rgb(79,70,229)]/20 rounded-xl blur-xl group-hover:bg-[rgb(79,70,229)]/30 transition-all duration-300" />
+                <Brain className="w-10 h-10 text-[rgb(79,70,229)] relative" />
+              </div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">
+                BrainlyAi
+              </span>
+            </Link>
+            <h2 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">
+              Welcome back
+            </h2>
+            <p className="text-center text-gray-600 dark:text-gray-400">
+              Sign in to your account to continue
             </p>
-          </div>
-        </form>
+          </motion.div>
+
+          <motion.form 
+            variants={itemVariants}
+            className="mt-8 space-y-6" 
+            onSubmit={handleSubmit}
+          >
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium">
+                  Email address
+                </label>
+                <div className="mt-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="block w-full pl-10 pr-4 py-3 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-[rgb(79,70,229)] transition-all duration-200"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium">
+                  Password
+                </label>
+                <div className="mt-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="block w-full pl-10 pr-4 py-3 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-[rgb(79,70,229)] transition-all duration-200"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {error && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-red-500 text-sm text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-lg"
+              >
+                {error}
+              </motion.div>
+            )}
+
+            <motion.button
+              variants={itemVariants}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={loading}
+              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[rgb(79,70,229)] hover:bg-[rgb(79,70,229)]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgb(79,70,229)] disabled:opacity-50 transition-all duration-200 gap-2"
+            >
+              {loading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  Sign in
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
+            </motion.button>
+
+            <motion.div 
+              variants={itemVariants}
+              className="text-center"
+            >
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Don't have an account?{' '}
+                <Link
+                  to="/signup"
+                  className="font-medium text-[rgb(79,70,229)] hover:text-[rgb(79,70,229)]/90 transition-colors duration-200"
+                >
+                  Sign up
+                </Link>
+              </p>
+            </motion.div>
+          </motion.form>
+        </motion.div>
       </div>
     </div>
   );

@@ -85,8 +85,8 @@ npm test
 ## Links
 
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/brainlyai/your-extension-id)
-- [Official Website](https://calm-horse-4892b7.netlify.app)
-- [Pricing](https://calm-horse-4892b7.netlify.app/pricing)
+- [Official Website](https://brainlyai.in/)
+- [Pricing](https://brainlyai.in/pricing)
 
 ## Contributing
 
@@ -104,4 +104,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Report bugs through the extension's bug report feature
 - Email: support@brainlyai.app
-- Visit our [website](https://calm-horse-4892b7.netlify.app) for more information
+- Visit our [website](https://brainlyai.in/) for more information

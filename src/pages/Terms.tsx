@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Scale, ArrowRight, FileText } from 'lucide-react';
+import { FileText, ArrowRight, Shield } from 'lucide-react';
 
 export const TermsPage = () => {
   const containerVariants = {
@@ -52,8 +52,8 @@ export const TermsPage = () => {
               transition={{ duration: 0.6 }}
               className="inline-flex items-center bg-white/30 dark:bg-gray-800/30 rounded-full px-6 py-3 mb-8 backdrop-blur-sm"
             >
-              <Scale className="w-5 h-5 text-[rgb(79,70,229)] mr-3" />
-              <span className="text-sm font-medium">Terms and Conditions</span>
+              <FileText className="w-5 h-5 text-[rgb(79,70,229)] mr-3" />
+              <span className="text-sm font-medium">Terms & Conditions</span>
             </motion.div>
             
             <motion.h1 
@@ -100,7 +100,7 @@ export const TermsPage = () => {
 
                 <div className="space-y-6">
                   <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">2. Description of Service</h2>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     BrainlyAi provides an AI-powered educational assistance platform that helps students understand and solve academic problems. Our services include but are not limited to:
                   </p>
                   <ul className="list-none space-y-2">
@@ -124,7 +124,7 @@ export const TermsPage = () => {
 
                 <div className="space-y-6">
                   <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">3. User Accounts</h2>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     To access certain features of our service, you must create an account. You are responsible for:
                   </p>
                   <ul className="list-none space-y-2">
@@ -147,7 +147,7 @@ export const TermsPage = () => {
 
                 <div className="space-y-6">
                   <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">4. Subscription and Payments</h2>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     Premium features require a paid subscription. By subscribing, you agree to:
                   </p>
                   <ul className="list-none space-y-2">
@@ -170,7 +170,7 @@ export const TermsPage = () => {
 
                 <div className="space-y-6">
                   <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">5. Acceptable Use</h2>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     You agree not to:
                   </p>
                   <ul className="list-none space-y-2">
@@ -194,7 +194,7 @@ export const TermsPage = () => {
 
                 <div className="space-y-6">
                   <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">6. Intellectual Property</h2>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     All content and materials available through our service are protected by intellectual property rights. You may not:
                   </p>
                   <ul className="list-none space-y-2">
@@ -231,7 +231,7 @@ export const TermsPage = () => {
 
                 <div className="space-y-6">
                   <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">9. Contact Information</h2>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     For questions about these terms, please contact us at:
                   </p>
                   <ul className="list-none space-y-2">

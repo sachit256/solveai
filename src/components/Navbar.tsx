@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Brain, LogOut, User, ChevronDown } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,6 +7,7 @@ import { useAuth } from '../contexts/AuthContext';
 export const Navbar = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showDropdown, setShowDropdown] = useState(false);
 
   const handleSignOut = async () => {
@@ -20,22 +21,68 @@ export const Navbar = () => {
     return user.email.charAt(0).toUpperCase();
   };
 
+  const isActivePage = (path: string) => {
+    return location.pathname === path;
+  };
+
   return (
     <header className="fixed top-0 w-full bg-white/80 dark:bg-gray-950/90 backdrop-blur-lg z-50 border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <Brain className="w-8 h-8 text-primary-600" />
+          <Brain className="w-8 h-8 text-[rgb(79,70,229)]" />
           <span className="text-xl font-bold">BrainlyAi</span>
         </Link>
         <div className="flex items-center space-x-6">
           <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/features" className="text-gray-600 dark:text-gray-300 hover:text-primary-600">Features</Link>
-            <Link to="/pricing" className="text-gray-600 dark:text-gray-300 hover:text-primary-600">Pricing</Link>
-            <Link to="/about" className="text-gray-600 dark:text-gray-300 hover:text-primary-600">About</Link>
-            <Link to="/contact" className="text-gray-600 dark:text-gray-300 hover:text-primary-600">Contact</Link>
+            <Link 
+              to="/features" 
+              className={`relative text-gray-600 dark:text-gray-300 hover:text-[rgb(79,70,229)] dark:hover:text-[rgb(79,70,229)] transition-colors py-5 ${
+                isActivePage('/features') ? 'text-[rgb(79,70,229)] dark:text-[rgb(79,70,229)] dark:text-opacity-90' : ''
+              }`}
+            >
+              Features
+              {isActivePage('/features') && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[rgb(79,70,229)] dark:bg-[rgb(79,70,229)] dark:bg-opacity-90" />
+              )}
+            </Link>
+            <Link 
+              to="/pricing" 
+              className={`relative text-gray-600 dark:text-gray-300 hover:text-[rgb(79,70,229)] dark:hover:text-[rgb(79,70,229)] transition-colors py-5 ${
+                isActivePage('/pricing') ? 'text-[rgb(79,70,229)] dark:text-[rgb(79,70,229)] dark:text-opacity-90' : ''
+              }`}
+            >
+              Pricing
+              {isActivePage('/pricing') && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[rgb(79,70,229)] dark:bg-[rgb(79,70,229)] dark:bg-opacity-90" />
+              )}
+            </Link>
+            <Link 
+              to="/about" 
+              className={`relative text-gray-600 dark:text-gray-300 hover:text-[rgb(79,70,229)] dark:hover:text-[rgb(79,70,229)] transition-colors py-5 ${
+                isActivePage('/about') ? 'text-[rgb(79,70,229)] dark:text-[rgb(79,70,229)] dark:text-opacity-90' : ''
+              }`}
+            >
+              About
+              {isActivePage('/about') && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[rgb(79,70,229)] dark:bg-[rgb(79,70,229)] dark:bg-opacity-90" />
+              )}
+            </Link>
+            <Link 
+              to="/contact" 
+              className={`relative text-gray-600 dark:text-gray-300 hover:text-[rgb(79,70,229)] dark:hover:text-[rgb(79,70,229)] transition-colors py-5 ${
+                isActivePage('/contact') ? 'text-[rgb(79,70,229)] dark:text-[rgb(79,70,229)] dark:text-opacity-90' : ''
+              }`}
+            >
+              Contact
+              {isActivePage('/contact') && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[rgb(79,70,229)] dark:bg-[rgb(79,70,229)] dark:bg-opacity-90" />
+              )}
+            </Link>
             <Link 
               to="/student"
-              className="px-4 py-2 bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900 transition-colors"
+              className={`px-4 py-2 bg-primary-50 dark:bg-primary-900/50 text-[rgb(79,70,229)] dark:text-[rgb(79,70,229)] dark:text-opacity-90 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900 transition-colors ${
+                isActivePage('/student') ? 'ring-2 ring-[rgb(79,70,229)] dark:ring-[rgb(79,70,229)] dark:ring-opacity-90' : ''
+              }`}
             >
               Student Board
             </Link>
