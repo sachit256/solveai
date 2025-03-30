@@ -1,7 +1,12 @@
 import React from 'react';
 import { Brain, Users, Target, Award, ArrowRight, Sparkles, Globe } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 export const AboutPage = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   const values = [
     {
       icon: <Brain className="w-6 h-6" />,
@@ -31,6 +36,14 @@ export const AboutPage = () => {
     { number: "95%", label: "Success Rate" },
     { number: "24/7", label: "Support" }
   ];
+
+  const handleGetStarted = () => {
+    if (user) {
+      navigate('/');
+    } else {
+      navigate('/signin');
+    }
+  };
 
   return (
     <div className="pt-16">
@@ -130,8 +143,12 @@ export const AboutPage = () => {
             <p className="text-lg mb-8 opacity-90">
               Join millions of students who are already experiencing the future of education.
             </p>
-            <button className="bg-white text-[rgb(79,70,229)] px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-lg">
-              Get Started Now
+            <button 
+              onClick={handleGetStarted}
+              className="bg-white text-[rgb(79,70,229)] px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center gap-2 mx-auto"
+            >
+              {user ? 'Go to Dashboard' : 'Get Started Now'}
+              <ArrowRight className="w-5 h-5" />
             </button>
           </div>
         </div>

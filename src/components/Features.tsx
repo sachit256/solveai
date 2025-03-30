@@ -1,6 +1,9 @@
 import React from 'react';
 import { Camera, MessageCircle, Zap, BookOpen, Clock, Check, Brain, Shield, ArrowRight, Sparkles, Star, Laptop } from 'lucide-react';
 
+// Chrome Web Store URL constant
+const CHROME_STORE_URL = 'https://chrome.google.com/webstore/detail/brainlyai/ipkfbbjjlklmccnlhebanolgjhhjdidg';
+
 export const Features = () => {
   const mainFeatures = [
     {
@@ -57,6 +60,10 @@ export const Features = () => {
       topics: ["History", "Literature", "Economics", "Philosophy"]
     }
   ];
+
+  const handleTryItNow = () => {
+    window.open(CHROME_STORE_URL, '_blank');
+  };
 
   return (
     <div className="pt-16">
@@ -156,8 +163,12 @@ export const Features = () => {
             <p className="text-lg mb-8 opacity-90">
               Join thousands of students who are already experiencing the future of education.
             </p>
-            <button className="bg-white text-[rgb(79,70,229)] px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-1">
-              Try It Free
+            <button 
+              onClick={handleTryItNow}
+              className="bg-white text-[rgb(79,70,229)] px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center gap-2 mx-auto"
+            >
+              Try It Now
+              <ArrowRight className="w-5 h-5" />
             </button>
           </div>
         </div>

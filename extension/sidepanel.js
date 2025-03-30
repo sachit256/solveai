@@ -322,8 +322,28 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Chat icon click handler
   chatIcon.addEventListener('click', () => {
     setActiveIcon(chatIcon);
-    // Open webapp in new tab
-    chrome.tabs.create({ url: 'https://www.brainlyai.in/student' });
+    // Check both auth and subscription status
+    chrome.storage.local.get(['userEmail', 'subscriptionStatus', 'access_token'], (result) => {
+      console.log('Chat navigation - User status:', { 
+        hasEmail: !!result.userEmail,
+        hasToken: !!result.access_token,
+        subscriptionStatus: result.subscriptionStatus 
+      });
+
+      const isLoggedIn = result.userEmail && result.access_token;
+      const isPremium = result.subscriptionStatus === 'premium' || result.subscriptionStatus === 'team';
+
+      if (isLoggedIn && isPremium) {
+        // If user is logged in and has premium subscription
+        chrome.tabs.create({ url: 'https://www.brainlyai.in/student' });
+      } else if (!isLoggedIn) {
+        // If user is not logged in
+        chrome.tabs.create({ url: 'https://www.brainlyai.in/signin' });
+      } else {
+        // If user is logged in but doesn't have premium
+        chrome.tabs.create({ url: 'https://www.brainlyai.in/pricing' });
+      }
+    });
   });
 
   // Settings icon click handler
@@ -403,6 +423,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   const privacy = document.getElementById('privacy');
   const logoutBtn = document.getElementById('logout');
 
+  // Load saved settings with dark mode defaulting to true
+  chrome.storage.local.get(['darkMode', 'showSidebarShortcut'], (result) => {
+    if (darkModeToggle) {
+      // Set dark mode to true by default if not explicitly set to false
+      const isDarkMode = result.darkMode !== false;
+      darkModeToggle.checked = isDarkMode;
+      updateTheme(isDarkMode);
+    }
+    if (sidebarShortcutToggle) {
+      // Default to true unless explicitly set to false
+      sidebarShortcutToggle.checked = result.showSidebarShortcut !== false;
+    }
+  });
+
+  // Initialize dark mode immediately
+  updateTheme(true);
+
   // Dark mode toggle
   if (darkModeToggle) {
     darkModeToggle.addEventListener('change', () => {
@@ -437,16 +474,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
-
-  // Load saved settings
-  chrome.storage.local.get(['darkMode', 'showSidebarShortcut'], (result) => {
-    if (darkModeToggle) darkModeToggle.checked = result.darkMode || false;
-    if (sidebarShortcutToggle) {
-      // Default to true unless explicitly set to false
-      sidebarShortcutToggle.checked = result.showSidebarShortcut !== false;
-    }
-    if (result.darkMode) updateTheme(true);
-  });
 
   // Add keyboard shortcut for toggling sidebar
   document.addEventListener('keydown', (e) => {

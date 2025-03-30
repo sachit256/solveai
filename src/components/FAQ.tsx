@@ -15,7 +15,7 @@ export const FAQ = () => {
     },
     {
       question: "Can I try BrainlyAi before subscribing?",
-      answer: "Yes! You can start with our free plan that includes 5 questions per day. This allows you to experience our platform before choosing a paid subscription."
+      answer: "Yes! You can start with our free plan that includes 2 questions per day. This allows you to experience our platform before choosing a paid subscription."
     },
     {
       question: "How accurate are the solutions?",
@@ -27,7 +27,7 @@ export const FAQ = () => {
     },
     {
       question: "Is there a mobile app available?",
-      answer: "Yes, we have mobile apps available for both iOS and Android devices. You can download them from the respective app stores."
+      answer: "We are working on it currently. The Android and iOS apps are coming soon and will be available on the respective app stores."
     },
     {
       question: "How does team pricing work?",
@@ -71,15 +71,7 @@ export const FAQ = () => {
             ))}
           </div>
         </div>
-
-        <div className="text-center mt-16">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Still have questions?
-          </p>
-          <button className="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium">
-            Contact Support
-          </button>
-        </div>
+        
       </div>
     </section>
   );

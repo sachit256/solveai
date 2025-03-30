@@ -12,6 +12,7 @@ import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 import { TermsPage } from './pages/TermsPage';
 import { PrivacyPage } from './pages/PrivacyPage';
+import { FAQPage } from './pages/FAQPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { Toaster } from 'react-hot-toast';
 import { Footer } from './components/Footer';
@@ -50,6 +51,7 @@ function App() {
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/terms" element={<TermsPage />} />
                 <Route path="/privacy" element={<PrivacyPage />} />
+                <Route path="/faq" element={<FAQPage />} />
                 <Route path="/student" element={
                   <ProtectedRoute requiresSubscription>
                     <StudentBoardPage />

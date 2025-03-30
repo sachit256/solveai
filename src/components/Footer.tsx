@@ -77,6 +77,9 @@ export const Footer = () => {
           <p className="text-gray-500 dark:text-gray-400 text-sm text-center">
             © {new Date().getFullYear()} BrainlyAi. All rights reserved.
           </p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm text-center mt-4 max-w-3xl mx-auto leading-relaxed">
+            BrainlyAI strictly opposes plagiarism and any form of academic dishonesty. If our services are misused, we reserve the right to take appropriate actions to uphold the integrity of our platform. This may include, but is not limited to, collaborating with academic institutions and suspending accounts.
+          </p>
         </div>
       </div>
     </footer>
