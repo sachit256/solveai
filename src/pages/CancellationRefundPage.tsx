@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Lock, ArrowRight } from 'lucide-react';
+import { RotateCcw, ArrowRight } from 'lucide-react';
 
-export const PrivacyPage = () => {
+export const CancellationRefundPage = () => {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -52,8 +52,8 @@ export const PrivacyPage = () => {
               transition={{ duration: 0.6 }}
               className="inline-flex items-center bg-white/30 dark:bg-gray-800/30 rounded-full px-6 py-3 mb-8 backdrop-blur-sm"
             >
-              <Lock className="w-5 h-5 text-[rgb(79,70,229)] mr-3" />
-              <span className="text-sm font-medium">Privacy Policy</span>
+              <RotateCcw className="w-5 h-5 text-[rgb(79,70,229)] mr-3" />
+              <span className="text-sm font-medium">Cancellation & Refund Policy</span>
             </motion.div>
             
             <motion.h1 
@@ -62,7 +62,7 @@ export const PrivacyPage = () => {
               transition={{ delay: 0.2, duration: 0.6 }}
               className="text-5xl font-bold mb-6 bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent"
             >
-              Privacy Policy
+              Cancellation & Refund Policy
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -91,106 +91,11 @@ export const PrivacyPage = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-[rgb(79,70,229)]/5 to-transparent dark:from-[rgb(79,70,229)]/10 rounded-2xl" />
             <div className="relative prose dark:prose-invert max-w-none">
               <motion.div variants={itemVariants} className="space-y-8">
+                {/* Cancellation Section */}
                 <div className="space-y-6">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">1. Introduction</h2>
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">1. Subscription Cancellation</h2>
                   <p className="text-gray-600 dark:text-gray-300">
-                    At BrainlyAi, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.
-                  </p>
-                </div>
-
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">2. Information We Collect</h2>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4">2.1 Personal Information</h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4">We collect information that you provide directly to us, including:</p>
-                    <ul className="list-none space-y-2">
-                      {['Name and email address', 'Payment information', 'Academic information', 'Usage data and preferences'].map((item, index) => (
-                        <motion.li 
-                          key={index}
-                          variants={itemVariants}
-                          className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
-                        >
-                          <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                          {item}
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4">2.2 Automatically Collected Information</h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4">When you use our service, we automatically collect:</p>
-                    <ul className="list-none space-y-2">
-                      {['Device information', 'Log data', 'Usage patterns', 'Performance data'].map((item, index) => (
-                        <motion.li 
-                          key={index}
-                          variants={itemVariants}
-                          className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
-                        >
-                          <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                          {item}
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">3. How We Use Your Information</h2>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">We use the collected information to:</p>
-                  <ul className="list-none space-y-2">
-                    {[
-                      'Provide and maintain our service',
-                      'Improve and personalize your experience',
-                      'Process payments',
-                      'Send important notifications',
-                      'Analyze usage patterns',
-                      'Prevent fraud and abuse'
-                    ].map((item, index) => (
-                      <motion.li 
-                        key={index}
-                        variants={itemVariants}
-                        className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
-                      >
-                        <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                        {item}
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">4. Information Sharing</h2>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">We may share your information with:</p>
-                  <ul className="list-none space-y-2">
-                    <motion.li 
-                      variants={itemVariants}
-                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
-                    >
-                      <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Service providers and partners
-                    </motion.li>
-                    <motion.li 
-                      variants={itemVariants}
-                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
-                    >
-                      <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Legal authorities when required
-                    </motion.li>
-                    <motion.li 
-                      variants={itemVariants}
-                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
-                    >
-                      <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Other users (only with your consent)
-                    </motion.li>
-                  </ul>
-                </div>
-
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">5. Data Security</h2>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    We implement appropriate security measures to protect your information, including:
+                    You can cancel your subscription at any time through your account settings. Upon cancellation:
                   </p>
                   <ul className="list-none space-y-2">
                     <motion.li 
@@ -198,85 +103,127 @@ export const PrivacyPage = () => {
                       className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
                     >
                       <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Encryption of sensitive data
+                      Your access will continue until the end of your current billing period
                     </motion.li>
                     <motion.li 
                       variants={itemVariants}
                       className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
                     >
                       <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Regular security audits
+                      No partial refunds for unused time
                     </motion.li>
                     <motion.li 
                       variants={itemVariants}
                       className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
                     >
                       <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Access controls
-                    </motion.li>
-                    <motion.li 
-                      variants={itemVariants}
-                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
-                    >
-                      <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Secure data storage
+                      You can continue using premium features until the period ends
                     </motion.li>
                   </ul>
                 </div>
 
                 <div className="space-y-6">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">6. Your Rights</h2>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">You have the right to:</p>
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">2. Cancellation Process</h2>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    To cancel your subscription:
+                  </p>
                   <ul className="list-none space-y-2">
                     <motion.li 
                       variants={itemVariants}
                       className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
                     >
                       <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Access your personal information
+                      Log into your account
                     </motion.li>
                     <motion.li 
                       variants={itemVariants}
                       className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
                     >
                       <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Correct inaccurate data
+                      Go to Account Settings
                     </motion.li>
                     <motion.li 
                       variants={itemVariants}
                       className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
                     >
                       <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Request deletion of your data
+                      Select Subscription Management
                     </motion.li>
                     <motion.li 
                       variants={itemVariants}
                       className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
                     >
                       <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Opt-out of marketing communications
+                      Click "Cancel Subscription"
+                    </motion.li>
+                  </ul>
+                </div>
+
+                {/* Refund Section */}
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">3. Refund Eligibility</h2>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    We offer refunds under the following circumstances:
+                  </p>
+                  <ul className="list-none space-y-2">
+                    <motion.li 
+                      variants={itemVariants}
+                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
+                    >
+                      <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
+                      Technical issues preventing service access
+                    </motion.li>
+                    <motion.li 
+                      variants={itemVariants}
+                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
+                    >
+                      <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
+                      Incorrect subscription charges
+                    </motion.li>
+                    <motion.li 
+                      variants={itemVariants}
+                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
+                    >
+                      <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
+                      Service unavailability during paid period
                     </motion.li>
                   </ul>
                 </div>
 
                 <div className="space-y-6">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">7. Children's Privacy</h2>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    Our service is not intended for children under 13. We do not knowingly collect information from children under 13.
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">4. Refund Process</h2>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    To request a refund:
                   </p>
+                  <ul className="list-none space-y-2">
+                    <motion.li 
+                      variants={itemVariants}
+                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
+                    >
+                      <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
+                      Contact our support team within 7 days of purchase
+                    </motion.li>
+                    <motion.li 
+                      variants={itemVariants}
+                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
+                    >
+                      <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
+                      Provide your order details and reason for refund
+                    </motion.li>
+                    <motion.li 
+                      variants={itemVariants}
+                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
+                    >
+                      <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
+                      Allow 5-7 business days for processing
+                    </motion.li>
+                  </ul>
                 </div>
 
                 <div className="space-y-6">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">8. Changes to Privacy Policy</h2>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    We may update this policy periodically. We will notify you of any material changes by posting the new policy on this page.
-                  </p>
-                </div>
-
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">9. Contact Us</h2>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    For questions about this Privacy Policy, please contact us at:
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">5. Contact Information</h2>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    For cancellations, refunds, or related questions, contact us at:
                   </p>
                   <ul className="list-none space-y-2">
                     <motion.li 
@@ -291,7 +238,7 @@ export const PrivacyPage = () => {
                       className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
                     >
                       <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Address: CODWAYS TECHNOLOGIES LLP Office No. 101 D-60, Sector-63, Noida, Uttar Pradesh India - 201301
+                      Phone: +91 8700944131
                     </motion.li>
                   </ul>
                 </div>

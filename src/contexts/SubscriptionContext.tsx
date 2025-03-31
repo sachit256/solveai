@@ -9,7 +9,12 @@ interface SubscriptionContextType {
   currentPlan: string | null;
   loadingSubscription: boolean;
   processingPayment: boolean;
-  handleSubscription: (planId: string, amount: number) => Promise<void>;
+  handleSubscription: (planId: string, amount: number) => Promise<SubscriptionResult>;
+}
+
+interface SubscriptionResult {
+  status: 'success' | 'error';
+  message?: string;
 }
 
 const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
@@ -54,14 +59,14 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }
   };
 
-  const handleSubscription = async (planId: string, amount: number) => {
+  const handleSubscription = async (planId: string, amount: number): Promise<SubscriptionResult> => {
     if (!user) {
       navigate('/signin');
-      return;
+      return { status: 'error', message: 'User not authenticated' };
     }
 
+    setProcessingPayment(true);
     try {
-      setProcessingPayment(true);
       // Validate inputs
       if (!planId || !amount || amount <= 0) {
         throw new Error('Invalid subscription parameters');
@@ -134,6 +139,7 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
             if (verifyData.success) {
               toast.success('Payment successful! Your subscription is now active.');
               await checkSubscription();
+              return { status: 'success' };
             } else {
               toast.error(verifyData.error || 'Payment verification failed');
               throw new Error(verifyData.error || 'Payment verification failed');
@@ -161,6 +167,7 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
       console.error('Error creating order:', error);
       toast.error('Failed to create order. Please try again.');
       setProcessingPayment(false);
+      return { status: 'error', message: 'Failed to process subscription' };
     }
   };
 

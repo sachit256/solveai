@@ -7,7 +7,7 @@ import { ExtensionPromo } from '../components/ExtensionPromo';
 
 export const HomePage = () => {
   return (
-    <main className="pt-16 bg-gradient-to-b from-primary-50/50 to-transparent dark:from-gray-900/50 dark:to-transparent">
+    <main className="bg-gradient-to-b from-primary-50/50 to-transparent dark:from-gray-900/50 dark:to-transparent">
       <Hero />
       <ExtensionPromo />
       <Features />
@@ -15,4 +15,4 @@ export const HomePage = () => {
       <Stats />
     </main>
   );
-}; 
+};

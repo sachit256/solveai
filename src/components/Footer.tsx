@@ -62,6 +62,15 @@ export const Footer = () => {
               </li>
               <li>
                 <Link 
+                  to="/refund"
+                  className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 flex items-center gap-2 transition-colors"
+                >
+                  <FileText className="w-4 h-4" />
+                  Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link 
                   to="/privacy"
                   className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 flex items-center gap-2 transition-colors"
                 >

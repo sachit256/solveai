@@ -46,7 +46,7 @@ export const ExtensionPromo = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="py-24 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-[rgb(79,70,229)]/5 to-transparent dark:from-[rgb(79,70,229)]/10" />
       <div className="absolute -top-1/2 left-0 w-full h-full bg-gradient-to-br from-[rgb(79,70,229)]/10 via-transparent to-transparent transform rotate-12 dark:from-[rgb(79,70,229)]/20" />
@@ -68,15 +68,15 @@ export const ExtensionPromo = () => {
               Get instant answers and explanations for any question, anywhere on
               the web
             </p>
-            <a
+            {/* TEMP COMMENTED <a
               href="https://chrome.google.com/webstore/detail/brainlyai/your-extension-id"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-8 py-4 bg-[rgb(79,70,229)] hover:bg-[rgb(79,70,229)]/90 text-white rounded-full font-medium text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <Chrome className="w-5 h-5 mr-2" />
-              Add to Chrome - It's Free
-            </a>
+              Add to Chrome - It's Powerful
+            </a> */}
           </div>
 
           {/* How it Works Steps */}
@@ -106,18 +106,18 @@ export const ExtensionPromo = () => {
               <div className="aspect-video rounded-lg overflow-hidden relative">
                 {/* Light theme image */}
                 <img
-                  src="/demo/light-theme-question.jpeg"
+                  src="/demo/lighttheme.jpg"
                   alt="BrainlyAi Extension Demo - Light Theme"
                   className="w-full h-full object-cover absolute inset-0 transition-all duration-500 ease-in-out group-hover:scale-105 block dark:opacity-0"
                 />
                 {/* Dark theme image */}
                 <img
-                  src="/demo/dark-theme-question.jpeg"
+                  src="/demo/darktheme.jpg"
                   alt="BrainlyAi Extension Demo - Dark Theme"
                   className="w-full h-full object-cover absolute inset-0 transition-all duration-500 ease-in-out group-hover:scale-105 opacity-0 dark:opacity-100"
                 />
               </div>
-              
+
               {/* Floating Add to Chrome Button */}
               {/* <div className="absolute bottom-4 right-4 transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-in-out">
                 <button className="flex items-center gap-2 px-4 py-2 bg-[rgb(79,70,229)] text-white rounded-lg hover:bg-[rgb(79,70,229)]/90 transition-colors shadow-lg">

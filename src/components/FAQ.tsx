@@ -6,40 +6,47 @@ export const FAQ = () => {
 
   const faqs = [
     {
-      question: "How does BrainlyAi work?",
-      answer: "Simply take a photo of your question or problem, and our AI will analyze it instantly. You'll receive a detailed solution with step-by-step explanations within seconds."
+      question: 'How does BrainlyAi work?',
+      answer:
+        "Simply select your question or problem, and our AI will analyze it instantly. You'll receive a detailed solution with step-by-step explanations within seconds.",
     },
     {
-      question: "What subjects are supported?",
-      answer: "We support a wide range of subjects including Mathematics, Physics, Chemistry, Biology, Computer Science, History, Literature, and Economics. Premium users get access to all subjects."
+      question: 'What subjects are supported?',
+      answer:
+        'We support a wide range of subjects including Mathematics, Physics, Chemistry, Biology, Computer Science, History, Literature, and Economics. Premium users get access to all subjects.',
     },
     {
-      question: "Can I try BrainlyAi before subscribing?",
-      answer: "Yes! You can start with our free plan that includes 2 questions per day. This allows you to experience our platform before choosing a paid subscription."
+      question: 'Can I try BrainlyAi before subscribing?',
+      answer:
+        'Yes! You can start with our free plan that includes 2 questions per day. This allows you to experience our platform before choosing a paid subscription.',
     },
     {
-      question: "How accurate are the solutions?",
-      answer: "Our AI system maintains a 98% accuracy rate. All solutions are verified and cross-checked for accuracy. If you ever find an incorrect solution, please report it and we'll address it immediately."
+      question: 'How accurate are the solutions?',
+      answer:
+        "Our AI system maintains a 98% accuracy rate. All solutions are verified and cross-checked for accuracy. If you ever find an incorrect solution, please report it and we'll address it immediately.",
     },
     {
-      question: "Can I cancel my subscription anytime?",
-      answer: "Yes, you can cancel your subscription at any time. Your access will continue until the end of your current billing period."
+      question: 'Can I cancel my subscription anytime?',
+      answer:
+        'Yes, you can cancel your subscription at any time. Your access will continue until the end of your current billing period.',
     },
     {
-      question: "Is there a mobile app available?",
-      answer: "We are working on it currently. The Android and iOS apps are coming soon and will be available on the respective app stores."
+      question: 'Is there a mobile app available?',
+      answer:
+        'We are working on it currently. The Android and iOS apps are coming soon and will be available on the respective app stores.',
     },
     {
-      question: "How does team pricing work?",
-      answer: "Team pricing includes up to 5 members with shared workspaces, team analytics, and collaborative features. Contact our sales team for custom pricing for larger teams."
-    }
+      question: 'How does team pricing work?',
+      answer:
+        'Team pricing includes up to 5 members with shared workspaces, team analytics, and collaborative features. Contact our sales team for custom pricing for larger teams.',
+    },
   ];
 
   return (
     <section className="py-24 bg-gray-50 dark:bg-gray-900" id="faq">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent">
             Everything you need to know about BrainlyAi
           </h2>
         </div>
@@ -53,9 +60,13 @@ export const FAQ = () => {
               >
                 <button
                   className="w-full px-6 py-4 flex items-center justify-between focus:outline-none"
-                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  onClick={() =>
+                    setOpenIndex(openIndex === index ? null : index)
+                  }
                 >
-                  <span className="text-lg font-medium text-left">{faq.question}</span>
+                  <span className="text-lg font-medium text-left">
+                    {faq.question}
+                  </span>
                   {openIndex === index ? (
                     <ChevronUp className="w-5 h-5 text-gray-500" />
                   ) : (
@@ -64,15 +75,16 @@ export const FAQ = () => {
                 </button>
                 {openIndex === index && (
                   <div className="px-6 pb-4">
-                    <p className="text-gray-600 dark:text-gray-400">{faq.answer}</p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {faq.answer}
+                    </p>
                   </div>
                 )}
               </div>
             ))}
           </div>
         </div>
-        
       </div>
     </section>
   );
-}; 
+};

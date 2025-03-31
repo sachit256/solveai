@@ -9,6 +9,7 @@ import { SignInPage } from './pages/SignInPage';
 import { SignUpPage } from './pages/SignUpPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { AboutPage } from './pages/AboutPage';
+import { RefundPage } from './pages/RefundPage';
 import { ContactPage } from './pages/ContactPage';
 import { TermsPage } from './pages/TermsPage';
 import { PrivacyPage } from './pages/PrivacyPage';
@@ -50,6 +51,7 @@ function App() {
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/terms" element={<TermsPage />} />
+                <Route path="/refund" element={<RefundPage />} />
                 <Route path="/privacy" element={<PrivacyPage />} />
                 <Route path="/faq" element={<FAQPage />} />
                 <Route path="/student" element={

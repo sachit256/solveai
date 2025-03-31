@@ -20,29 +20,23 @@ declare global {
   const chrome: Window['chrome'];
 }
 
-// Extension IDs for different environments
-const EXTENSION_IDS = {
-  development: 'ipkfbbjjlklmccnlhebanolgjhhjdidg',
-  production: 'YOUR_PRODUCTION_EXTENSION_ID' // Replace with your production extension ID
-};
-
-// Get the current environment's extension ID
-const getExtensionId = () => {
-  const isDevelopment = window.location.hostname === 'localhost' || 
-                       window.location.hostname === '127.0.0.1';
-  return isDevelopment ? EXTENSION_IDS.development : EXTENSION_IDS.production;
-};
+// Extension ID for development and production
+const EXTENSION_ID = 'ipkfbbjjlklmccnlhebanolgjhhjdidg'; // Replace with your actual extension ID
 
 // Debug function to check extension availability
 const debugChromeRuntime = () => {
-  const extensionId = getExtensionId();
   console.log('Chrome object available:', typeof window.chrome !== 'undefined');
-  console.log('Chrome runtime available:', typeof window.chrome?.runtime !== 'undefined');
-  console.log('Chrome sendMessage available:', typeof window.chrome?.runtime?.sendMessage !== 'undefined');
-  console.log('Using Extension ID:', extensionId);
+  console.log(
+    'Chrome runtime available:',
+    typeof window.chrome?.runtime !== 'undefined'
+  );
+  console.log(
+    'Chrome sendMessage available:',
+    typeof window.chrome?.runtime?.sendMessage !== 'undefined'
+  );
+  console.log('Using Extension ID:', EXTENSION_ID);
   console.log('Current URL:', window.location.href);
   console.log('Current Origin:', window.location.origin);
-  console.log('Environment:', window.location.hostname === 'localhost' ? 'development' : 'production');
 };
 
 interface UserData {
@@ -70,9 +64,9 @@ export const SignInPage = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -81,9 +75,9 @@ export const SignInPage = () => {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.5
-      }
-    }
+        duration: 0.5,
+      },
+    },
   };
 
   const notifyExtension = async (userData: UserData) => {
@@ -91,10 +85,15 @@ export const SignInPage = () => {
       console.log('=== Extension Communication Debug ===');
       debugChromeRuntime();
       console.log('Attempting to notify extension with data:', userData);
-      
+
       // Check if Chrome runtime is available
-      if (typeof window.chrome === 'undefined' || !window.chrome?.runtime?.sendMessage) {
-        console.error('Chrome runtime not available - are you running this in Chrome with the extension installed?');
+      if (
+        typeof window.chrome === 'undefined' ||
+        !window.chrome?.runtime?.sendMessage
+      ) {
+        console.error(
+          'Chrome runtime not available - are you running this in Chrome with the extension installed?'
+        );
         return;
       }
 
@@ -103,19 +102,19 @@ export const SignInPage = () => {
       const access_token = sessionData?.session?.access_token;
 
       console.log('Sending message to extension...');
-      // Try to send message to extension using environment-specific ID
-      const response = await window.chrome.runtime.sendMessage(getExtensionId(), {
+      // Try to send message to extension
+      const response = await window.chrome.runtime.sendMessage(EXTENSION_ID, {
         type: 'SIGNIN_SUCCESS',
         userData: {
           email: userData.email,
           subscriptionStatus: userData.subscriptionStatus || 'free',
           userId: userData.id,
-          access_token: access_token
-        }
+          access_token: access_token,
+        },
       });
 
       console.log('Raw extension response:', response);
-      
+
       if (response?.success) {
         console.log('Successfully notified extension');
       } else {
@@ -127,7 +126,7 @@ export const SignInPage = () => {
         console.error('Extension communication error:', {
           message: error.message,
           stack: error.stack,
-          error
+          error,
         });
       } else {
         console.error('Unknown extension error:', error);
@@ -142,10 +141,11 @@ export const SignInPage = () => {
 
     try {
       // Sign in with Supabase auth
-      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+      const { data: authData, error: authError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
       if (authError) {
         throw authError;
@@ -162,13 +162,17 @@ export const SignInPage = () => {
       }
 
       // Check subscription status using Supabase client
-      const { data: subscriptionData, error: subscriptionError } = await supabase
-        .from('subscriptions')
-        .select('plan_id')
-        .eq('user_id', authData.user.id)
-        .single();
+      const { data: subscriptionData, error: subscriptionError } =
+        await supabase
+          .from('subscriptions')
+          .select('plan_id')
+          .eq('user_id', authData.user.id)
+          .single();
 
-      if (subscriptionError && !subscriptionError.message.includes('No rows found')) {
+      if (
+        subscriptionError &&
+        !subscriptionError.message.includes('No rows found')
+      ) {
         console.error('Error fetching subscription:', subscriptionError);
       }
 
@@ -187,12 +191,12 @@ export const SignInPage = () => {
       await notifyExtension({
         email: authData.user.email,
         id: authData.user.id,
-        subscriptionStatus: subscriptionStatus
+        subscriptionStatus: subscriptionStatus,
       });
 
       // Store session data in Chrome storage
       if (window.chrome?.runtime?.sendMessage) {
-        await window.chrome.runtime.sendMessage(getExtensionId(), {
+        await window.chrome.runtime.sendMessage(EXTENSION_ID, {
           type: 'STORE_SESSION',
           session: {
             access_token: access_token,
@@ -200,9 +204,9 @@ export const SignInPage = () => {
             user: {
               id: authData.user.id,
               email: authData.user.email,
-              subscriptionStatus: subscriptionStatus
-            }
-          }
+              subscriptionStatus: subscriptionStatus,
+            },
+          },
         });
       }
 
@@ -222,21 +226,24 @@ export const SignInPage = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-[rgb(79,70,229)]/5 via-transparent to-transparent dark:from-[rgb(79,70,229)]/10" />
         <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-gradient-to-br from-[rgb(79,70,229)]/10 to-transparent rounded-full blur-3xl dark:from-[rgb(79,70,229)]/20" />
         <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-gradient-to-tl from-[rgb(79,70,229)]/10 to-transparent rounded-full blur-3xl dark:from-[rgb(79,70,229)]/20" />
-        
+
         {/* Additional decorative elements */}
         <div className="absolute top-1/4 right-1/4 w-24 h-24 bg-[rgb(79,70,229)]/10 rounded-full blur-xl dark:bg-[rgb(79,70,229)]/20" />
         <div className="absolute bottom-1/4 left-1/4 w-32 h-32 bg-[rgb(79,70,229)]/10 rounded-full blur-xl dark:bg-[rgb(79,70,229)]/20" />
       </div>
 
       <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="max-w-md w-full space-y-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-8 rounded-2xl shadow-xl relative"
         >
           <motion.div variants={itemVariants}>
-            <Link to="/" className="flex items-center justify-center gap-2 mb-8 group">
+            <Link
+              to="/"
+              className="flex items-center justify-center gap-2 mb-8 group"
+            >
               <div className="relative">
                 <div className="absolute inset-0 bg-[rgb(79,70,229)]/20 rounded-xl blur-xl group-hover:bg-[rgb(79,70,229)]/30 transition-all duration-300" />
                 <Brain className="w-10 h-10 text-[rgb(79,70,229)] relative" />
@@ -253,9 +260,9 @@ export const SignInPage = () => {
             </p>
           </motion.div>
 
-          <motion.form 
+          <motion.form
             variants={itemVariants}
-            className="mt-8 space-y-6" 
+            className="mt-8 space-y-6"
             onSubmit={handleSubmit}
           >
             <div className="space-y-4">
@@ -299,7 +306,7 @@ export const SignInPage = () => {
             </div>
 
             {error && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-red-500 text-sm text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-lg"
@@ -329,10 +336,7 @@ export const SignInPage = () => {
               )}
             </motion.button>
 
-            <motion.div 
-              variants={itemVariants}
-              className="text-center"
-            >
+            <motion.div variants={itemVariants} className="text-center">
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 Don't have an account?{' '}
                 <Link

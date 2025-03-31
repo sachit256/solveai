@@ -240,14 +240,14 @@ export const TermsPage = () => {
                       className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
                     >
                       <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Email: legal@brainlyai.app
+                      Email: info.codersachit@gmail.com
                     </motion.li>
                     <motion.li 
                       variants={itemVariants}
                       className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
                     >
                       <ArrowRight className="w-4 h-4 text-[rgb(79,70,229)]" />
-                      Address: 123 AI Street, Tech Valley, CA 94025
+                      Address: CODWAYS TECHNOLOGIES LLP Office No. 101 D-60, Sector-63, Noida, Uttar Pradesh India - 201301
                     </motion.li>
                   </ul>
                 </div>

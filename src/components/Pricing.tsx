@@ -3,135 +3,172 @@ import { Check, X, Loader2 } from 'lucide-react';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { sendInvoiceEmail } from '../lib/email';
+import { toast } from 'sonner';
 
 export const Pricing = () => {
-  const { handleSubscription, currentPlan, processingPayment } = useSubscription();
+  const { handleSubscription, currentPlan, processingPayment } =
+    useSubscription();
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  const handlePayment = async (planId: string, amount: number) => {
+    if (!user?.email) {
+      navigate('/signin');
+      return;
+    }
+
+    try {
+      const result = await handleSubscription(planId, amount);
+      
+      if (result.status === 'success') {
+        const invoiceNumber = `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+        
+        const emailResult = await sendInvoiceEmail({
+          userEmail: user.email,
+          userName: user.email.split('@')[0],
+          planName: planId === 'premium' ? 'Premium Plan' : 'Team Plan',
+          amount: amount,
+          invoiceDate: new Date().toLocaleDateString(),
+          invoiceNumber: invoiceNumber
+        });
+
+        if (!emailResult.success) {
+          console.error('Failed to send invoice email:', emailResult.error);
+          toast.error('Payment successful but failed to send invoice email. Our team will send it manually.');
+        }
+      } else {
+        toast.error(result.message || 'Failed to process payment. Please try again.');
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      toast.error('Failed to process payment. Please try again.');
+    }
+  };
+
   const plans = [
     {
-      name: "Free",
-      id: "free",
-      price: "0",
-      description: "Perfect for trying out BrainlyAi",
+      name: 'Free',
+      id: 'free',
+      price: '0',
+      description: 'Perfect for trying out BrainlyAi',
       features: [
-        "2 questions per day",
-        "Basic explanations",
-        "Core subjects only",
-        "Standard response time",
+        '2 questions per day',
+        'Basic explanations',
+        'Core subjects only',
+        'Standard response time',
       ],
-      button: "Get Started",
-      popular: false
+      button: 'Get Started',
+      popular: false,
     },
     {
-      name: "Premium",
-      id: "premium",
-      price: "599",
-      period: "month",
-      description: "Most popular for students",
+      name: 'Premium',
+      id: 'premium',
+      price: '599',
+      period: 'month',
+      description: 'Most popular for students',
       features: [
-        "Unlimited questions",
-        "Detailed step-by-step solutions",
-        "All subjects supported",
-        "Priority response time",
-        "Personalized learning paths",
-        "Practice exercises",
-        "Progress tracking",
-        "24/7 AI support"
+        'Unlimited questions',
+        'Detailed step-by-step solutions',
+        'All subjects supported',
+        'Priority response time',
+        'Personalized learning paths',
+        'Practice exercises',
+        'Progress tracking',
+        '24/7 AI support',
       ],
-      button: "Subscribe",
-      popular: true
+      button: 'Subscribe',
+      popular: true,
     },
     {
-      name: "Team",
-      id: "team",
-      price: "999",
-      period: "month",
-      description: "Perfect for study groups",
+      name: 'Team',
+      id: 'team',
+      price: '999',
+      period: 'month',
+      description: 'Perfect for study groups',
       features: [
-        "Everything in Premium",
-        "Up to 5 team members",
-        "Shared workspaces",
-        "Team analytics",
-        "Collaborative learning",
-        "Custom branding",
+        'Everything in Premium',
+        'Up to 5 team members',
+        'Shared workspaces',
+        'Team analytics',
+        'Collaborative learning',
+        'Custom branding',
       ],
-      button: "Coming Soon",
-      popular: false
-    }
+      button: 'Coming Soon',
+      popular: false,
+    },
   ];
 
   const featureComparison = [
     {
-      category: "Basic Features",
+      category: 'Basic Features',
       features: [
         {
-          name: "Questions per day",
-          free: "5",
-          premium: "Unlimited",
-          team: "Unlimited"
+          name: 'Questions per day',
+          free: '5',
+          premium: 'Unlimited',
+          team: 'Unlimited',
         },
         {
-          name: "Response time",
-          free: "Standard",
-          premium: "Priority",
-          team: "Priority"
+          name: 'Response time',
+          free: 'Standard',
+          premium: 'Priority',
+          team: 'Priority',
         },
         {
-          name: "Subjects covered",
-          free: "Core subjects",
-          premium: "All subjects",
-          team: "All subjects"
-        }
-      ]
+          name: 'Subjects covered',
+          free: 'Core subjects',
+          premium: 'All subjects',
+          team: 'All subjects',
+        },
+      ],
     },
     {
-      category: "Advanced Features",
+      category: 'Advanced Features',
       features: [
         {
-          name: "Step-by-step explanations",
+          name: 'Step-by-step explanations',
           free: false,
           premium: true,
-          team: true
+          team: true,
         },
         {
-          name: "Practice exercises",
+          name: 'Practice exercises',
           free: false,
           premium: true,
-          team: true
+          team: true,
         },
         {
-          name: "Progress tracking",
+          name: 'Progress tracking',
           free: false,
           premium: true,
-          team: true
-        }
-      ]
+          team: true,
+        },
+      ],
     },
     {
-      category: "Team Features",
+      category: 'Team Features',
       features: [
         {
-          name: "Shared workspaces",
+          name: 'Shared workspaces',
           free: false,
           premium: false,
-          team: true
+          team: true,
         },
         {
-          name: "Team analytics",
+          name: 'Team analytics',
           free: false,
           premium: false,
-          team: true
+          team: true,
         },
         {
-          name: "Custom branding",
+          name: 'Custom branding',
           free: false,
           premium: false,
-          team: true
-        }
-      ]
-    }
+          team: true,
+        },
+      ],
+    },
   ];
 
   return (
@@ -139,13 +176,6 @@ export const Pricing = () => {
       {/* Pricing Cards */}
       <section className="py-24">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold mb-4">Simple, Transparent Pricing</h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              Choose the plan that's right for you
-            </p>
-          </div>
-
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {plans.map((plan, index) => (
               <div
@@ -171,7 +201,9 @@ export const Pricing = () => {
                       </span>
                     )}
                   </div>
-                  <p className="text-gray-600 dark:text-gray-400">{plan.description}</p>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {plan.description}
+                  </p>
                 </div>
                 <ul className="space-y-4 mb-8">
                   {plan.features.map((feature, i) => (
@@ -183,23 +215,21 @@ export const Pricing = () => {
                 </ul>
                 <button
                   onClick={() => {
-                    if (!user) {
-                      navigate('/signin');
-                      return;
-                    }
                     if (plan.id === 'premium') {
-                      handleSubscription(plan.id, 59900);
+                      handlePayment(plan.id, 59900);
                     } else if (plan.id === 'team') {
-                      handleSubscription(plan.id, 99900);
+                      handlePayment(plan.id, 99900);
                     }
                   }}
                   disabled={currentPlan === plan.id || processingPayment}
                   className={`w-full py-3 px-4 rounded-lg font-medium transition-all ${
                     currentPlan === plan.id
-                      ? 'bg-green-600 text-white cursor-default' 
+                      ? 'bg-green-600 text-white cursor-default'
                       : plan.popular
-                        ? `bg-primary-600 hover:bg-primary-700 text-white ${processingPayment ? 'opacity-75 cursor-wait' : ''}`
-                        : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      ? `bg-primary-600 hover:bg-primary-700 text-white ${
+                          processingPayment ? 'opacity-75 cursor-wait' : ''
+                        }`
+                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <span className="flex items-center justify-center gap-2">
@@ -225,7 +255,9 @@ export const Pricing = () => {
       <section className="py-24 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Compare Features</h2>
+            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-[rgb(79,70,229)] to-purple-600 bg-clip-text text-transparent leading-[1.2] md:leading-[1.2]">
+              Compare Features
+            </h2>
             <p className="text-gray-600 dark:text-gray-400">
               Detailed comparison of all features across plans
             </p>
@@ -251,7 +283,10 @@ export const Pricing = () => {
                         </td>
                       </tr>
                       {category.features.map((feature, j) => (
-                        <tr key={j} className="border-b border-gray-200 dark:border-gray-700">
+                        <tr
+                          key={j}
+                          className="border-b border-gray-200 dark:border-gray-700"
+                        >
                           <td className="py-4 px-6">{feature.name}</td>
                           <td className="text-center py-4 px-6">
                             {typeof feature.free === 'boolean' ? (
@@ -298,4 +333,4 @@ export const Pricing = () => {
       </section>
     </div>
   );
-}; 
+};

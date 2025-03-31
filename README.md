@@ -5,16 +5,19 @@ BrainlyAi is a powerful Chrome extension that provides instant answers and expla
 ## Features
 
 ### Core Functionality
+
 - **Instant Answers**: Select any text on a webpage to get immediate, AI-powered answers
 - **Detailed Explanations**: Receive step-by-step explanations with visual aids for complex questions
 - **Unlimited Usage**: Premium users get unlimited access to all features
 
 ### User Interface
+
 - **Dark Mode by Default**: Modern, eye-friendly dark theme
 - **Responsive Sidepanel**: Easy-to-use interface with intuitive navigation
 - **Keyboard Shortcuts**: Quick access with Cmd+B (Mac) or Ctrl+B (Windows/Linux)
 
 ### Premium Features
+
 - Advanced AI-powered responses
 - Unlimited questions and explanations
 - Priority support
@@ -22,12 +25,14 @@ BrainlyAi is a powerful Chrome extension that provides instant answers and expla
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/brainlyai.git
 cd brainlyai
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
@@ -41,7 +46,9 @@ npm install
 ## Configuration
 
 ### Environment Variables
+
 Create a `.env` file in the extension directory with the following variables:
+
 ```
 SUPABASE_URL=your_supabase_url
 SUPABASE_ANON_KEY=your_supabase_key
@@ -49,6 +56,7 @@ OPENAI_API_KEY=your_openai_api_key
 ```
 
 ### API Keys
+
 - **Supabase**: Sign up at [Supabase](https://supabase.com) to get your project URL and anonymous key
 - **OpenAI**: Get your API key from [OpenAI Platform](https://platform.openai.com)
 
@@ -62,6 +70,7 @@ OPENAI_API_KEY=your_openai_api_key
 ## Development
 
 ### Project Structure
+
 ```
 extension/
 ├── manifest.json        # Extension configuration
@@ -73,11 +82,13 @@ extension/
 ```
 
 ### Building
+
 ```bash
 npm run build
 ```
 
 ### Testing
+
 ```bash
 npm test
 ```
